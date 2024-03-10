@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_transaction"
+        android:title="@string/transaction"
+        android:icon="@drawable/bx_notepad"/>
+
+    <item android:id="@+id/nav_scan"
+        android:title="@string/scan"
+        android:icon="@drawable/bx_scan"/>
+
+    <item android:id="@+id/nav_pie_chart"
+        android:title="@string/pie_chart"
+        android:icon="@drawable/bx_pie_chart_alt_2"/>
+
+    <item android:id="@+id/nav_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/bxcog"/>
+
+
+</menu>
