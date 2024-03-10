@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "BondoMan"
 include(":app")
- 
