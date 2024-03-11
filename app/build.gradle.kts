@@ -4,13 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "com.breezydr.bondoman"
+    namespace = "com.sleepee.bondoman"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.breezydr.bondoman"
+        applicationId = "com.sleepee.bondoman"
         minSdk = 29
-        targetSdk = 34
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 

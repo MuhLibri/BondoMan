@@ -1,4 +1,4 @@
-package com.breezydr.bondoman
+package com.sleepee.bondoman
 
 import org.junit.Test
 
