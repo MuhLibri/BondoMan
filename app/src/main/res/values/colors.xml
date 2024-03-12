@@ -4,7 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="darker_blue">#1E2030</color>
     <color name="less_darker_blue">#252739</color>
-    <color name="pale_yellow">#252739</color>
+    <color name="crust_blue">#181926</color>
+    <color name="pale_yellow">#EED49F</color>
     <color name="light_blue">#CAD3F5</color>
     <color name="red">#EE99A0</color>
     <color name="green">#A6DA95</color>
