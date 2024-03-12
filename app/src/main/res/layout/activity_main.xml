@@ -8,6 +8,7 @@
 
     <FrameLayout
         android:layout_width="0dp"
+        android:id="@+id/frame_content"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -15,38 +16,38 @@
         android:background="@color/less_darker_blue"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
 
-            <TextView
-                android:id="@+id/helloMainActivity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello Main Activity!"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.45"
-                tools:ignore="HardcodedText" />
+<!--            <TextView-->
+<!--                android:id="@+id/helloMainActivity"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Hello Main Activity!"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="24sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.45"-->
+<!--                tools:ignore="HardcodedText" />-->
 
-            <Button
-                tools:ignore="HardcodedText"
-                android:id="@+id/logoutButton"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/red"
-                app:layout_constraintTop_toBottomOf="@+id/helloMainActivity"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/crust_blue"
-                android:fontFamily="@font/inter_semi_bold"
-                android:text="Logout" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <Button-->
+<!--                tools:ignore="HardcodedText"-->
+<!--                android:id="@+id/logoutButton"-->
+<!--                android:layout_width="320dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:backgroundTint="@color/red"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/helloMainActivity"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:textColor="@color/crust_blue"-->
+<!--                android:fontFamily="@font/inter_semi_bold"-->
+<!--                android:text="Logout" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
     </FrameLayout>

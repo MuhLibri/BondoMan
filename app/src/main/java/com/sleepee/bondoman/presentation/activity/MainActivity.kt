@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.commit
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.databinding.ActivityMainBinding
 
@@ -15,20 +16,23 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val logoutButton = binding.logoutButton
-        logoutButton.setOnClickListener {
-            logout()
+//        val logoutButton = binding.logoutButton
+//        logoutButton.setOnClickListener {
+//            logout()
+//        }
+//
+//        // Handle back button => Minimize the app, no logout
+//        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                moveTaskToBack(true)
+//            }
+//        })
+        supportFragmentManager.commit {
+            add(R.id.frame_content, TransactionFragment())
         }
-
-        // Handle back button => Minimize the app, no logout
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                moveTaskToBack(true)
-            }
-        })
     }
 
-    private fun logout() {
-        finish()
-    }
+//    private fun logout() {
+//        finish()
+//    }
 }
