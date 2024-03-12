@@ -8,8 +8,8 @@
         android:title="@string/scan"
         android:icon="@drawable/bx_scan"/>
 
-    <item android:id="@+id/nav_pie_chart"
-        android:title="@string/pie_chart"
+    <item android:id="@+id/nav_graph"
+        android:title="@string/graph"
         android:icon="@drawable/bx_pie_chart_alt_2"/>
 
     <item android:id="@+id/nav_settings"
