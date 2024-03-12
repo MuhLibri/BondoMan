@@ -13,13 +13,16 @@
         android:theme="@style/Theme.BondoMan"
         tools:targetApi="31">
         <activity
-            android:name="com.sleepee.bondoman.MainActivity"
+            android:name=".presentation.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.activity.MainActivity"
+            android:exported="true">
         </activity>
     </application>
 
