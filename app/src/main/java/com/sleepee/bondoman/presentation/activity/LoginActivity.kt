@@ -9,17 +9,22 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.R
+import com.sleepee.bondoman.databinding.ActivityLoginBinding
+import com.sleepee.bondoman.databinding.ActivityMainBinding
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLoginBinding
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
 
-        val loginButton = findViewById<Button>(R.id.loginButton)
+        setContentView(binding.root)
 
-        val emailEditText = findViewById<EditText>(R.id.emailInput)
-        val passwordEditText = findViewById<EditText>(R.id.passwordInput)
+        val loginButton = binding.loginButton
+
+        val emailEditText = binding.emailInput
+        val passwordEditText = binding.passwordInput
 
         // For ease of testing only
         emailEditText.setText("13521085@std.stei.itb.ac.id")

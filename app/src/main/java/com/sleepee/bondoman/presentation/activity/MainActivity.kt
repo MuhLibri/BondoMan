@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import com.sleepee.bondoman.R
+import com.sleepee.bondoman.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        val logoutButton = findViewById<Button>(R.id.logoutButton)
+        setContentView(binding.root)
+
+        val logoutButton = binding.logoutButton
         logoutButton.setOnClickListener {
             logout()
         }
