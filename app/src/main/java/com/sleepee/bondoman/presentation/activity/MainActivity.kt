@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.databinding.ActivityMainBinding
+import com.sleepee.bondoman.presentation.fragment.TransactionFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
