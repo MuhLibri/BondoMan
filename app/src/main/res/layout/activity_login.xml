@@ -1,91 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-    android:background="@color/less_darker_blue"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/less_darker_blue">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="128dp"
-        android:fontFamily="@font/inter_semi_bold"
-        android:text="Log In"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/less_darker_blue"
+        android:orientation="vertical"
+        >
 
-    <TextView
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/inter_regular"
-        android:labelFor="@+id/emailInput"
-        android:text="Email"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="Log In"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            tools:ignore="HardcodedText" />
 
-    <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="320dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:autofillHints="emailAddress"
-        android:background="@color/light_blue"
-        android:inputType="textEmailAddress"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="2dp"
-        android:textCursorDrawable="@drawable/black_cursor"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/inter_regular"
+            android:labelFor="@+id/emailInput"
+            android:text="Email"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/inter_regular"
-        android:labelFor="@+id/passwordInput"
-        android:text="Password"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:autofillHints="emailAddress"
+            android:background="@color/light_blue"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:textSize="20sp"
+            android:textColor="@color/crust_blue"
+            tools:ignore="HardcodedText" />
 
-    <EditText
-        android:id="@+id/passwordInput"
-        android:layout_width="320dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:autofillHints="password"
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/inter_regular"
+            android:labelFor="@+id/passwordInput"
+            android:text="Password"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
 
-        android:background="@color/light_blue"
-        android:inputType="textPassword"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
-        android:textCursorDrawable="@drawable/black_cursor"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:autofillHints="password"
+            android:background="@color/light_blue"
+            android:inputType="textPassword"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:textSize="20sp"
+            android:textColor="@color/crust_blue"
+            tools:ignore="HardcodedText" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="72dp"
-        android:backgroundTint="@color/pale_yellow"
-        android:fontFamily="@font/inter_semi_bold"
-        android:paddingVertical="8dp"
-        android:text="Masuk"
-        android:textAllCaps="false"
-        android:textColor="@color/crust_blue"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
-</LinearLayout>
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="56dp"
+            android:backgroundTint="@color/pale_yellow"
+            android:fontFamily="@font/inter_semi_bold"
+            android:paddingVertical="8dp"
+            android:text="Masuk"
+            android:textAllCaps="false"
+            android:textColor="@color/crust_blue"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
