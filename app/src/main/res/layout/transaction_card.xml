@@ -60,46 +60,46 @@
             tools:text="Beli Ayam Geprek untuk buka puasa" />
 
         <ImageView
-            android:layout_width="wrap_content"
             android:id="@+id/money_logo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            android:src="@drawable/bx_money"
             android:layout_marginTop="10dp"
-            android:contentDescription="Money logo" />
+            android:contentDescription="Money logo"
+            android:src="@drawable/bx_money"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/inter_regular"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="10dp"
             app:layout_constraintLeft_toRightOf="@id/money_logo"
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="Rp 15.000" />
 
         <ImageView
-            android:layout_width="wrap_content"
             android:id="@+id/pinned_logo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/money_logo"
-            android:src="@drawable/baseline_pin_drop_24"
             android:layout_marginTop="10dp"
-            android:contentDescription="Pinned logo" />
+            android:contentDescription="Pinned logo"
+            android:src="@drawable/baseline_pin_drop_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/money_logo" />
 
         <TextView
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/inter_regular"
             android:singleLine="true"
-            android:layout_marginStart="10dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@id/pinned_logo"
