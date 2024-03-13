@@ -3,17 +3,25 @@ package com.sleepee.bondoman.presentation.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sleepee.bondoman.R
+import androidx.lifecycle.lifecycleScope
+import com.sleepee.bondoman.data.api.AuthService
+import com.sleepee.bondoman.data.api.RetrofitClient
+import com.sleepee.bondoman.data.api.model.LoginRequest
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
-import com.sleepee.bondoman.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private val authService : AuthService = RetrofitClient.Instance.create(AuthService::class.java)
+
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +29,10 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val loginButton = binding.loginButton
+        val loginButton : Button = binding.loginButton
 
-        val emailEditText = binding.emailInput
-        val passwordEditText = binding.passwordInput
+        val emailEditText : EditText = binding.emailInput
+        val passwordEditText : EditText = binding.passwordInput
 
         // For ease of testing only
         emailEditText.setText("13521085@std.stei.itb.ac.id")
@@ -50,8 +58,28 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-
         val mainActivityIntent = Intent(this, MainActivity::class.java)
+
+        /*
+        lifecycleScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                try {
+                    authService.login(LoginRequest(email, password))
+                } catch (e: Exception) {
+                    Log.e("LoginActivity", "Login failed: ${e.message}")
+                    null
+                }
+            }
+
+            if (res != null && res.isSuccessful) {
+                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
+                startActivity(mainActivityIntent)
+            } else {
+                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+        */
+
         startActivity(mainActivityIntent)
     }
 }
