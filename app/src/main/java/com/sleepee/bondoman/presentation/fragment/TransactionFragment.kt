@@ -1,5 +1,6 @@
 package com.sleepee.bondoman.presentation.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.databinding.DialogAddTransactionBinding
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
+import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 
 class TransactionFragment: Fragment() {
 
@@ -28,26 +30,27 @@ class TransactionFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fab.setOnClickListener {
-            showAddTransactionDialog()
+            val intent = Intent(context, AddTransactionActivity::class.java)
+            startActivity(intent)
         }
     }
 
     // sample function
 
-    private fun showAddTransactionDialog() {
-        val dialogBinding = DialogAddTransactionBinding.inflate(layoutInflater)
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("add new transaction")
-            .setView(dialogBinding.root)
-            .setPositiveButton("Save") { _, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Your transaction is: ${dialogBinding.editText.text}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+//    private fun showAddTransactionDialog() {
+//        val dialogBinding = DialogAddTransactionBinding.inflate(layoutInflater)
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setTitle("add new transaction")
+//            .setView(dialogBinding.root)
+//            .setPositiveButton("Save") { _, _ ->
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Your transaction is: ${dialogBinding.editText.text}",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//            .setNegativeButton("Cancel", null)
+//            .show()
+//    }
 
 }
