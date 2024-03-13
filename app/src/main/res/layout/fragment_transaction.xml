@@ -14,4 +14,19 @@
         android:textColor="@color/white"
         android:text="@string/this_is_a_transaction_fragment"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="36dp"
+        android:src="@drawable/baseline_add_24"
+        android:id="@+id/fab"
+        app:backgroundTint="@color/light_blue"
+        android:backgroundTint="@color/darker_blue"
+        app:tint="@color/light_blue"
+        app:borderWidth="4dp"
+        android:outlineAmbientShadowColor="@color/light_blue"
+        android:layout_width="wrap_content"
+        app:elevation="10dp"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
