@@ -21,11 +21,14 @@ import kotlinx.coroutines.withContext
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val authService : AuthService = RetrofitClient.Instance.create(AuthService::class.java)
+    private lateinit var mainActivityIntent : Intent
 
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
+
+        mainActivityIntent = Intent(this, MainActivity::class.java)
 
         setContentView(binding.root)
 
@@ -58,28 +61,24 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        val mainActivityIntent = Intent(this, MainActivity::class.java)
+//        lifecycleScope.launch {
+//            val res = withContext(Dispatchers.IO) {
+//                try {
+//                    authService.login(LoginRequest(email, password))
+//                } catch (e: Exception) {
+//                    Log.e("LoginActivity", "Login failed: ${e.message}")
+//                    null
+//                }
+//            }
+//
+//            if (res != null && res.isSuccessful) {
+//                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
+//                startActivity(mainActivityIntent)
+//            } else {
+//                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
-        /*
-        lifecycleScope.launch {
-            val res = withContext(Dispatchers.IO) {
-                try {
-                    authService.login(LoginRequest(email, password))
-                } catch (e: Exception) {
-                    Log.e("LoginActivity", "Login failed: ${e.message}")
-                    null
-                }
-            }
-
-            if (res != null && res.isSuccessful) {
-                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
-                startActivity(mainActivityIntent)
-            } else {
-                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-        */
-
-        startActivity(mainActivityIntent)
+         startActivity(mainActivityIntent)
     }
 }
