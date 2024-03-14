@@ -8,11 +8,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import com.sleepee.bondoman.network.LoginService
 import com.sleepee.bondoman.network.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
+import com.sleepee.bondoman.network.NetworkUtils
+import com.sleepee.bondoman.presentation.fragment.ConnectivityDialogFragment
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.ConnectivityDialogListener {
     private lateinit var binding: ActivityLoginBinding
     private val loginService : LoginService = RetrofitClient.Instance.create(LoginService::class.java)
     private lateinit var mainActivityIntent : Intent
@@ -41,6 +44,24 @@ class LoginActivity : AppCompatActivity() {
 
             login(email, password)
         }
+
+        val isNetworkConnected = NetworkUtils.isConnected(this)
+        if (!isNetworkConnected) {
+            showConnectivityDialog()
+        }
+    }
+
+    private fun showConnectivityDialog() {
+        val dialog = ConnectivityDialogFragment()
+        dialog.show(supportFragmentManager, "ConnectivityDialogFragment")
+    }
+
+    override fun onTryConnectivityAgainClick(dialog: DialogFragment) {
+        dialog.dismiss()
+    }
+    override fun onAccessAppOfflineClinck(dialog: DialogFragment) {
+        dialog.dismiss()
+        startActivity(mainActivityIntent)
     }
 
     private fun login(email : String, password : String) {
@@ -53,6 +74,11 @@ class LoginActivity : AppCompatActivity() {
         if (Patterns.EMAIL_ADDRESS.matcher(email).matches().not()) {
             Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             return
+        }
+
+        val isNetworkConnected = NetworkUtils.isConnected(this)
+        if (!isNetworkConnected) {
+            showConnectivityDialog()
         }
 
 //        lifecycleScope.launch {
@@ -73,6 +99,8 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //        }
 
-         startActivity(mainActivityIntent)
+        if (isNetworkConnected) { // For testing only
+            startActivity(mainActivityIntent)
+        }
     }
 }
