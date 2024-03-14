@@ -3,24 +3,18 @@ package com.sleepee.bondoman.presentation.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.sleepee.bondoman.data.api.AuthService
-import com.sleepee.bondoman.data.api.RetrofitClient
-import com.sleepee.bondoman.data.api.model.LoginRequest
+import com.sleepee.bondoman.network.LoginService
+import com.sleepee.bondoman.network.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val authService : AuthService = RetrofitClient.Instance.create(AuthService::class.java)
+    private val loginService : LoginService = RetrofitClient.Instance.create(LoginService::class.java)
     private lateinit var mainActivityIntent : Intent
 
     @SuppressLint("SetTextI18n") // delete this later

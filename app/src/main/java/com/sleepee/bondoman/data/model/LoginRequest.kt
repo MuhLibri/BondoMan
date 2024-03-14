@@ -1,4 +1,4 @@
-package com.sleepee.bondoman.data.api.model
+package com.sleepee.bondoman.data.model
 
 data class LoginRequest (
     val email: String,

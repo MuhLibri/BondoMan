@@ -1,4 +1,4 @@
-package com.sleepee.bondoman.data.api
+package com.sleepee.bondoman.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

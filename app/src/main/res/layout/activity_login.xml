@@ -53,7 +53,7 @@
             android:textCursorDrawable="@drawable/black_cursor"
             android:textSize="20sp"
             android:textColor="@color/crust_blue"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,LabelFor" />
 
         <TextView
             android:layout_width="320dp"
