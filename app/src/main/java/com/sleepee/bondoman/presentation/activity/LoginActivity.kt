@@ -3,22 +3,29 @@ package com.sleepee.bondoman.presentation.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.sleepee.bondoman.network.LoginService
-import com.sleepee.bondoman.network.RetrofitClient
+import androidx.lifecycle.lifecycleScope
+import com.sleepee.bondoman.data.model.LoginRequest
+import com.sleepee.bondoman.network.api.LoginApiService
+import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
 import com.sleepee.bondoman.network.NetworkUtils
 import com.sleepee.bondoman.presentation.fragment.ConnectivityDialogFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.ConnectivityDialogListener {
     private lateinit var binding: ActivityLoginBinding
-    private val loginService : LoginService = RetrofitClient.Instance.create(LoginService::class.java)
+    private val loginService : LoginApiService = RetrofitClient.Instance.create(LoginApiService::class.java)
     private lateinit var mainActivityIntent : Intent
+    private val connDialog = ConnectivityDialogFragment()
 
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +54,12 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
 
         val isNetworkConnected = NetworkUtils.isConnected(this)
         if (!isNetworkConnected) {
-            showConnectivityDialog()
+            showConnDialog()
         }
     }
 
-    private fun showConnectivityDialog() {
-        val dialog = ConnectivityDialogFragment()
-        dialog.show(supportFragmentManager, "ConnectivityDialogFragment")
+    private fun showConnDialog() {
+        connDialog.show(supportFragmentManager, "ConnectivityDialogFragment")
     }
 
     override fun onTryConnectivityAgainClick(dialog: DialogFragment) {
@@ -78,29 +84,26 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
 
         val isNetworkConnected = NetworkUtils.isConnected(this)
         if (!isNetworkConnected) {
-            showConnectivityDialog()
+            showConnDialog()
+            return
         }
 
-//        lifecycleScope.launch {
-//            val res = withContext(Dispatchers.IO) {
-//                try {
-//                    authService.login(LoginRequest(email, password))
-//                } catch (e: Exception) {
-//                    Log.e("LoginActivity", "Login failed: ${e.message}")
-//                    null
-//                }
-//            }
-//
-//            if (res != null && res.isSuccessful) {
-//                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
-//                startActivity(mainActivityIntent)
-//            } else {
-//                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        lifecycleScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                try {
+                    loginService.login(LoginRequest(email, password))
+                } catch (e: Exception) {
+                    Log.e("LoginActivity", "Login failed: ${e.message}")
+                    null
+                }
+            }
 
-        if (isNetworkConnected) { // For testing only
-            startActivity(mainActivityIntent)
+            if (res != null && res.isSuccessful) {
+                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
+                startActivity(mainActivityIntent)
+            } else {
+                Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
