@@ -24,6 +24,8 @@
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
+        android:fontFamily="@font/inter_regular"
+        android:hint="e.g. Beli Ayam Geprek"
         android:layout_marginTop="8dp"
         android:autofillHints="emailAddress"
         android:background="@color/light_blue"
@@ -51,6 +53,8 @@
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
+        android:fontFamily="@font/inter_regular"
+        android:hint="50000"
         android:layout_marginTop="8dp"
         android:autofillHints="password"
         android:background="@color/light_blue"
@@ -80,6 +84,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:background="@color/light_blue"
+        android:fontFamily="@font/inter_regular"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp" />
 
@@ -103,7 +108,6 @@
         android:layout_marginTop="8dp"
         android:autofillHints="password"
         android:background="@color/light_blue"
-        android:inputType="number"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
         android:textCursorDrawable="@drawable/black_cursor"
