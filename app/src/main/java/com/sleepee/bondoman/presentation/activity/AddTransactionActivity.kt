@@ -3,12 +3,15 @@ package com.sleepee.bondoman.presentation.activity
 import android.R
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 
@@ -17,6 +20,7 @@ class AddTransactionActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityAddTransactionBinding
     var selectedItem: String = "Pemasukan"
+    lateinit var backPressedCallback: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,7 @@ class AddTransactionActivity: AppCompatActivity() {
     private fun setupUI() {
         title = "Add New Transaction"
         setupCategoryDropdown()
+        setupBackButton()
         binding.addTransactionButton.setOnClickListener {
             val title = binding.title
             val amount = binding.amount
@@ -38,6 +43,32 @@ class AddTransactionActivity: AppCompatActivity() {
         }
 
     }
+
+    private fun setupBackButton() {
+        onBackPressedDispatcher.addCallback {
+            createConfirmationDialog()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.home) {
+                createConfirmationDialog()
+                return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Reset data")
+            .setMessage("Are you sure you want to discard all changes?")
+            .setPositiveButton("Yes") { _, _ ->
+                finish()
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
 
     private fun validateAddActivity(title: EditText, amount: EditText, location: EditText) {
         if (title.length() == 0) {

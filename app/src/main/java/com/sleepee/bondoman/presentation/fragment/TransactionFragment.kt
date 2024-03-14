@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.databinding.DialogAddTransactionBinding
@@ -16,6 +17,7 @@ import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 class TransactionFragment: Fragment() {
 
     private lateinit var binding: FragmentTransactionBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
