@@ -14,7 +14,7 @@ import com.sleepee.bondoman.presentation.fragment.ScanFragment
 import com.sleepee.bondoman.presentation.fragment.SettingsFragment
 import com.sleepee.bondoman.presentation.fragment.TransactionFragment
 
-class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +28,12 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             add(R.id.frame_content, TransactionFragment())
         }
 
-
-
-//        val logoutButton = binding.logoutButton
-//        logoutButton.setOnClickListener {
-//            logout()
-//        }
-//
-//        // Handle back button => Minimize the app, no logout
-//        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                moveTaskToBack(true)
-//            }
-//        })
+        // Handle back button => Minimize the app, no logout
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                moveTaskToBack(true)
+            }
+        })
 
     }
 
@@ -75,8 +68,4 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             }
         }
     }
-
-//    private fun logout() {
-//        finish()
-//    }
 }

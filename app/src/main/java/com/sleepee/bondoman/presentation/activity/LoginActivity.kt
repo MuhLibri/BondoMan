@@ -11,28 +11,40 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.sleepee.bondoman.data.model.LoginRequest
+import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.network.api.LoginApiService
 import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
+import com.sleepee.bondoman.network.JWTBackgroundService
 import com.sleepee.bondoman.network.NetworkUtils
 import com.sleepee.bondoman.presentation.fragment.ConnectivityDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.ConnectivityDialogListener {
     private lateinit var binding: ActivityLoginBinding
     private val loginService : LoginApiService = RetrofitClient.Instance.create(LoginApiService::class.java)
     private lateinit var mainActivityIntent : Intent
     private val connDialog = ConnectivityDialogFragment()
+    private lateinit var workManager : WorkManager
 
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TokenManager.init(applicationContext)
+        TokenManager.clearToken()
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         mainActivityIntent = Intent(this, MainActivity::class.java)
+        workManager = WorkManager.getInstance(applicationContext)
 
         setContentView(binding.root)
 
@@ -56,6 +68,11 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
         if (!isNetworkConnected) {
             showConnDialog()
         }
+
+        if (TokenManager.isTokenStored()) {
+            startMainActivity()
+            return
+        }
     }
 
     private fun showConnDialog() {
@@ -67,6 +84,17 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
     }
     override fun onAccessAppOfflineClinck(dialog: DialogFragment) {
         dialog.dismiss()
+        startActivity(mainActivityIntent)
+    }
+
+    private fun startJWTBackgroundService() {
+        val request = OneTimeWorkRequestBuilder<JWTBackgroundService>().build()
+        workManager.enqueue(request)
+        Log.d("LoginActivity", "JWTBackgroundService started")
+    }
+
+    private fun startMainActivity() {
+        startJWTBackgroundService()
         startActivity(mainActivityIntent)
     }
 
@@ -98,9 +126,11 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
                 }
             }
 
-            if (res != null && res.isSuccessful) {
-                Log.d("LoginActivity", "Login success with token ${res.body()?.token}")
-                startActivity(mainActivityIntent)
+            if (res != null && res.isSuccessful && res.body() != null){
+                val token = res.body()!!.token
+                TokenManager.storeToken(token)
+                Log.d("LoginActivity", "Login success with token $token")
+                startMainActivity()
             } else {
                 Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
             }

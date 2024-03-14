@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 
 
-class AddTransactionActivity: AppCompatActivity() {
+class AddTransactionActivity: BaseActivity() {
 
     private lateinit var binding: ActivityAddTransactionBinding
     var selectedItem: String = "Pemasukan"
