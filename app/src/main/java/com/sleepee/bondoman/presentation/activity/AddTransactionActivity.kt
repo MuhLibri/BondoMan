@@ -15,17 +15,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 
+const val INTENT_EXTRA_LOCATION = "location"
+
+
 
 class AddTransactionActivity: BaseActivity() {
 
     private lateinit var binding: ActivityAddTransactionBinding
     var selectedItem: String = "Pemasukan"
     lateinit var backPressedCallback: OnBackPressedCallback
+    private var locationString: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        locationString = intent.getStringExtra(INTENT_EXTRA_LOCATION)
 
         setupUI()
     }
@@ -34,6 +39,7 @@ class AddTransactionActivity: BaseActivity() {
         title = "Add New Transaction"
         setupCategoryDropdown()
         setupBackButton()
+        binding.location.setText(locationString)
         binding.addTransactionButton.setOnClickListener {
             val title = binding.title
             val amount = binding.amount
