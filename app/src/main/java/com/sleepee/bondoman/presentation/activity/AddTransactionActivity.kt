@@ -16,7 +16,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 const val INTENT_EXTRA_LOCATION = "location"
-
+const val INTENT_EXTRA_LATITUDE = "latitude"
+const val INTENT_EXTRA_LONGITUDE = "longitude"
 
 
 class AddTransactionActivity: BaseActivity() {
@@ -24,12 +25,19 @@ class AddTransactionActivity: BaseActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     var selectedItem: String = "Pemasukan"
     private var locationString: String ?= null
+    private var currentLatitude : Double ?= null
+    private var currentLongitude : Double ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // get location + coordinates data from the TransactionFragment
         locationString = intent.getStringExtra(INTENT_EXTRA_LOCATION)
+        currentLatitude = intent.getDoubleExtra(INTENT_EXTRA_LATITUDE, -6.890563)
+        currentLongitude = intent.getDoubleExtra(INTENT_EXTRA_LONGITUDE, 107.610696)
+
 
         setupUI()
     }
@@ -99,7 +107,7 @@ class AddTransactionActivity: BaseActivity() {
 
         val formatted = getCurrentDate()
 
-        Toast.makeText(this, formatted, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "$formatted, $currentLatitude, $currentLongitude", Toast.LENGTH_SHORT).show()
     }
 
     private fun getCurrentDate(): String? {

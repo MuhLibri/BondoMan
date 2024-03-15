@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LOCATION
+import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LATITUDE
+import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LONGITUDE
 import java.util.Locale
 
 const val REQUEST_CODE = 100
@@ -34,6 +36,8 @@ class TransactionFragment : Fragment() {
 
     private lateinit var binding: FragmentTransactionBinding
     private var address = "Institut Teknologi Bandung"
+    private var currentLatitude : Double ?= null
+    private var currentLongitude : Double ?= null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
@@ -49,13 +53,17 @@ class TransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Initialize FusedLocationProviderClient to detect current user's location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        // Happens when user presses on the plus button
         binding.fab.setOnClickListener {
             getLastLocation()
 
         }
     }
 
+    // Finding out if the phone has the location enabled on the settings.
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -68,6 +76,7 @@ class TransactionFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
+        // if the device is not granted the permissions to use the user's location, show a permission dialog for the user to share their location
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -85,32 +94,42 @@ class TransactionFragment : Fragment() {
             return
         }
 
+        // If location in the settings is enabled, add transactions.
         if (isLocationEnabled()) {
+            // detect current location of the phone using FusedLocationProviderClient
             fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_LOW_POWER, object : CancellationToken() {
                 override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
                 override fun isCancellationRequested() = false
             })
                 .addOnCompleteListener(requireActivity()) { task ->
                     val location: Location? = task.result
+                    // do reverse geocoding using geocoder based on the latitude + longitude from FusedLocationProviderClient
                     if (location != null) {
                         val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        currentLatitude = location.latitude
+                        currentLongitude = location.longitude
                         val addresses =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)
                         if (addresses != null) {
                             address = addresses[0].getAddressLine(0)
                         }
                     }
+                    // switch to AddTransactionActivity, while passing the address and the coordinates data
                     val intent = Intent(activity, AddTransactionActivity::class.java)
                     intent.putExtra(INTENT_EXTRA_LOCATION, address)
+                    intent.putExtra(INTENT_EXTRA_LATITUDE, currentLatitude)
+                    intent.putExtra(INTENT_EXTRA_LONGITUDE, currentLongitude)
                     startActivity(intent)
                 }
         } else {
+            // Location is not enabled yet --> Transaction activity cannot be activated, redirected to the location settings.
             Toast.makeText(requireContext(), "Please turn on location", Toast.LENGTH_LONG).show()
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
         }
     }
 
+    //Request permission, if allowed then getLastLocation()
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
