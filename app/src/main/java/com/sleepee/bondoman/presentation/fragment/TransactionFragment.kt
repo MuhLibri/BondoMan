@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,27 +85,30 @@ class TransactionFragment : Fragment() {
             return
         }
 
+        if (isLocationEnabled()) {
             fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_LOW_POWER, object : CancellationToken() {
                 override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
                 override fun isCancellationRequested() = false
             })
                 .addOnCompleteListener(requireActivity()) { task ->
-                val location: Location? = task.result
-                if (location != null) {
-                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    val addresses =
-                        geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    if (addresses != null) {
-                         address = addresses[0].getAddressLine(0)
+                    val location: Location? = task.result
+                    if (location != null) {
+                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        val addresses =
+                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        if (addresses != null) {
+                            address = addresses[0].getAddressLine(0)
+                        }
                     }
+                    val intent = Intent(activity, AddTransactionActivity::class.java)
+                    intent.putExtra(INTENT_EXTRA_LOCATION, address)
+                    startActivity(intent)
                 }
-                val intent = Intent(activity, AddTransactionActivity::class.java)
-                intent.putExtra(INTENT_EXTRA_LOCATION, address)
-                startActivity(intent)
-            }
-
-
-
+        } else {
+            Toast.makeText(requireContext(), "Please turn on location", Toast.LENGTH_LONG).show()
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+        }
     }
 
     @Deprecated("Deprecated in Java")

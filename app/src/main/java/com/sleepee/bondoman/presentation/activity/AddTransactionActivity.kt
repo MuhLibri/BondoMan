@@ -9,11 +9,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 const val INTENT_EXTRA_LOCATION = "location"
 
@@ -23,7 +23,6 @@ class AddTransactionActivity: BaseActivity() {
 
     private lateinit var binding: ActivityAddTransactionBinding
     var selectedItem: String = "Pemasukan"
-    lateinit var backPressedCallback: OnBackPressedCallback
     private var locationString: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,11 +93,20 @@ class AddTransactionActivity: BaseActivity() {
             return
         }
         if (amount.text.toString()[0] == '0') {
-            amount.error = "Amount must not be 0"
+            amount.error = "Amount must not be 0/amount is invalid"
             return
         }
 
-        Toast.makeText(this, "Okay", Toast.LENGTH_SHORT).show()
+        val formatted = getCurrentDate()
+
+        Toast.makeText(this, formatted, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getCurrentDate(): String? {
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        return current.format(formatter)
     }
 
     private fun setupCategoryDropdown() {
