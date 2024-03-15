@@ -11,12 +11,20 @@ abstract class TransactionDatabase : RoomDatabase() {
     abstract fun getTransactionDao() : TransactionDao
 
     companion object {
-        fun createDatabase(context: Context): TransactionDatabase {
-            return Room.databaseBuilder(
-                context,
-                TransactionDatabase::class.java,
-                "transaction-database"
-            ).build()
+
+        @Volatile
+        private var DATABASE_INSTANCE: TransactionDatabase ? = null
+        fun getDatabase(context: Context): TransactionDatabase {
+
+            return DATABASE_INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context,
+                    TransactionDatabase::class.java,
+                    "transaction-database"
+                ).build()
+                DATABASE_INSTANCE = instance
+                return instance
+            }
         }
     }
 

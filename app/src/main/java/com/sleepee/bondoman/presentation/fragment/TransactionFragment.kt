@@ -21,12 +21,16 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.sleepee.bondoman.data.model.TransactionDao
+import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LOCATION
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LATITUDE
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LONGITUDE
+import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
 import java.util.Locale
+import kotlin.concurrent.thread
 
 const val REQUEST_CODE = 100
 
@@ -39,20 +43,26 @@ class TransactionFragment : Fragment() {
     private var currentLatitude : Double ?= null
     private var currentLongitude : Double ?= null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val transactionDao: TransactionDao by lazy {
+        TransactionDatabase.getDatabase(requireContext()).getTransactionDao()
+    }
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTransactionBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
+
+        fetchAllTransactions()
 
         // Initialize FusedLocationProviderClient to detect current user's location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -60,6 +70,17 @@ class TransactionFragment : Fragment() {
         binding.fab.setOnClickListener {
             getLastLocation()
 
+        }
+    }
+
+    fun fetchAllTransactions() {
+        thread {
+            val transactions = transactionDao.getAllTransactions()
+            requireActivity().runOnUiThread {
+                binding.recyclerView.adapter = TransactionsAdapter(
+                    transactions = transactions
+                )
+            }
         }
     }
 

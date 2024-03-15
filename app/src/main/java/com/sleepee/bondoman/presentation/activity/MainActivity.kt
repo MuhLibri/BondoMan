@@ -16,6 +16,7 @@ import com.sleepee.bondoman.presentation.fragment.TransactionFragment
 
 class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

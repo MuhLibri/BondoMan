@@ -1,6 +1,7 @@
 package com.sleepee.bondoman.presentation.activity
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
@@ -11,10 +12,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import com.sleepee.bondoman.data.model.Transaction
+import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.concurrent.thread
 
 const val INTENT_EXTRA_LOCATION = "location"
 const val INTENT_EXTRA_LATITUDE = "latitude"
@@ -28,6 +35,10 @@ class AddTransactionActivity: BaseActivity() {
     private var locationString: String ?= null
     private var currentLatitude : Double ?= null
     private var currentLongitude : Double ?= null
+    private lateinit var database: TransactionDatabase
+    private val transactionDao: TransactionDao by lazy {
+        database.getTransactionDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +52,8 @@ class AddTransactionActivity: BaseActivity() {
 
         setupUI()
 
-//        val database = TransactionDatabase.createDatabase(this)
+        database = TransactionDatabase.getDatabase(this)
 
-//        val transactionDao = database.getTransactionDao()
-
-        
     }
 
     private fun setupUI() {
@@ -111,10 +119,18 @@ class AddTransactionActivity: BaseActivity() {
             return
         }
 
-        val formatted = getCurrentDate()
+        val formattedDate = getCurrentDate()
 
-        Toast.makeText(this, "$formatted, $currentLatitude, $currentLongitude", Toast.LENGTH_SHORT).show()
+        val transaction = Transaction(
+            title = title.text.toString(), amount = amount.text.toString().toInt(), category = selectedItem, date = formattedDate.toString(), location = location.text.toString()
+        )
+        thread {
+            transactionDao.createTransaction(transaction)
+        }
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
+
 
     private fun getCurrentDate(): String? {
         val current = LocalDateTime.now()
