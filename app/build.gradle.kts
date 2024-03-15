@@ -10,9 +10,9 @@ android {
 
     defaultConfig {
         applicationId = "com.sleepee.bondoman"
-        minSdk = 29
+        minSdk = 34
+        targetSdk = 34
         //noinspection ExpiredTargetSdkVersion
-        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 
