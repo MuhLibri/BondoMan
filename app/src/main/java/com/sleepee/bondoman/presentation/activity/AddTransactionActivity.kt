@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,8 +39,13 @@ class AddTransactionActivity: BaseActivity() {
         currentLatitude = intent.getDoubleExtra(INTENT_EXTRA_LATITUDE, -6.890563)
         currentLongitude = intent.getDoubleExtra(INTENT_EXTRA_LONGITUDE, 107.610696)
 
-
         setupUI()
+
+//        val database = TransactionDatabase.createDatabase(this)
+
+//        val transactionDao = database.getTransactionDao()
+
+        
     }
 
     private fun setupUI() {
