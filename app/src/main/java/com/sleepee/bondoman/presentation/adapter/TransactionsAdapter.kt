@@ -1,5 +1,6 @@
 package com.sleepee.bondoman.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +20,10 @@ class TransactionsAdapter(private val transactions: List<Transaction>): Recycler
     }
 
     inner class ViewHolder(private val binding: TransactionCardBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(transaction: Transaction) {
             binding.title.text = transaction.title
-            binding.price.text = transaction.amount.toString()
+            binding.price.text = "Rp. ${transaction.amount.toString()}"
             binding.category.text = transaction.category
             binding.location.text = transaction.location
             binding.date.text = transaction.date
