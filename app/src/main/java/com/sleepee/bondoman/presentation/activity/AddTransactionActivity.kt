@@ -2,6 +2,7 @@ package com.sleepee.bondoman.presentation.activity
 
 import android.R
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
@@ -20,6 +21,8 @@ import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okio.Utf8
+import java.net.URLEncoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.concurrent.thread
@@ -143,7 +146,8 @@ class AddTransactionActivity: BaseActivity() {
             amount = amount.text.toString().toInt(),
             category = selectedItem,
             date = formattedDate.toString(),
-            location = location.text.toString()
+            location = location.text.toString(),
+            locationLink = "geo:0,0?q=${URLEncoder.encode(location.text.toString(), "UTF-8")}"
         )
         return transaction
     }

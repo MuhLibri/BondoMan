@@ -15,6 +15,7 @@ import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.ActivityEditTransactionBinding
+import java.net.URLEncoder
 import kotlin.concurrent.thread
 
 const val EDIT_TRANSACTION_ID = "edit_transaction_id"
@@ -127,7 +128,8 @@ class EditTransactionActivity : BaseActivity() {
             amount = amount.text.toString().toInt(),
             category = category,
             date = date,
-            location = location.text.toString()
+            location = location.text.toString(),
+            locationLink = "geo:0,0?q=${URLEncoder.encode(location.text.toString(), "UTF-8")}"
         )
         return transaction
     }

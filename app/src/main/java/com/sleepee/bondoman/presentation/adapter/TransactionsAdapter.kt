@@ -1,15 +1,23 @@
 package com.sleepee.bondoman.presentation.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.databinding.TransactionCardBinding
+import com.sleepee.bondoman.presentation.activity.BaseActivity
+import com.sleepee.bondoman.presentation.fragment.TransactionFragment
 
-class TransactionsAdapter: RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
+class TransactionsAdapter(private val listener: LocationButtonListener): RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
     private var transactions = emptyList<Transaction>()
@@ -29,7 +37,16 @@ class TransactionsAdapter: RecyclerView.Adapter<TransactionsAdapter.ViewHolder>(
             }
             binding.location.text = transaction.location
             binding.date.text = transaction.date
+
+            if (transaction.locationLink != null)
+                binding.locationButton.setOnClickListener {
+                    listener.onLocationButtonPressed(transaction)
+                }
         }
+
+    }
+    interface LocationButtonListener {
+        fun onLocationButtonPressed(transaction: Transaction)
     }
 
     override fun getItemCount() = transactions.size
@@ -47,6 +64,7 @@ class TransactionsAdapter: RecyclerView.Adapter<TransactionsAdapter.ViewHolder>(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(transactionList: List<Transaction>) {
         this.transactions = transactionList
         notifyDataSetChanged()

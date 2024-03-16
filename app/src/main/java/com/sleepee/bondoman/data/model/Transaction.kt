@@ -12,5 +12,5 @@ data class Transaction(
     val category: String,
     val location: String,
     val date: String,
-    @ColumnInfo(name = "location_link") val locationLink: String? = null
+    @ColumnInfo(name = "location_link") var locationLink: String? = null
 )
