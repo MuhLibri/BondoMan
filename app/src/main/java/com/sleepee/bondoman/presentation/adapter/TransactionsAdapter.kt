@@ -9,33 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.databinding.TransactionCardBinding
 
-class TransactionsAdapter(private val transactions: List<Transaction>): RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
+class TransactionsAdapter: RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
-
-    override fun getItemCount() = transactions.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(TransactionCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(transactions[position])
-        holder.itemView.setOnClickListener {
-            if (onClickListener != null) {
-                onClickListener!!.onClick(position, transactions[position])
-            }
-        }
-    }
-
-    fun setOnClickListener(onClickListener: OnClickListener) {
-        this.onClickListener = onClickListener
-    }
-
-    // onClickListener Interface
-    interface OnClickListener {
-        fun onClick(position: Int, model: Transaction)
-    }
+    private var transactions = emptyList<Transaction>()
 
     inner class ViewHolder(private val binding: TransactionCardBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -54,6 +31,37 @@ class TransactionsAdapter(private val transactions: List<Transaction>): Recycler
             binding.date.text = transaction.date
         }
     }
+
+    override fun getItemCount() = transactions.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(TransactionCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(transactions[position])
+        holder.itemView.setOnClickListener {
+            if (onClickListener != null) {
+                onClickListener!!.onClick(position, transactions[position])
+            }
+        }
+    }
+
+    fun setData(transactionList: List<Transaction>) {
+        this.transactions = transactionList
+        notifyDataSetChanged()
+    }
+
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
+
+    // onClickListener Interface
+    interface OnClickListener {
+        fun onClick(position: Int, model: Transaction)
+    }
+
+
 
     interface TransactionGetListener {
         fun getTransaction(transaction: Transaction)

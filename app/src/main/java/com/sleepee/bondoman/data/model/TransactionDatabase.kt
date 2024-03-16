@@ -18,7 +18,7 @@ abstract class TransactionDatabase : RoomDatabase() {
 
             return DATABASE_INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context,
+                    context.applicationContext,
                     TransactionDatabase::class.java,
                     "transaction-database"
                 ).build()

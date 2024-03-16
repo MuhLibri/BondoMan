@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -40,6 +42,7 @@ import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_DATE
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION_LINK
 import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
+import com.sleepee.bondoman.presentation.viewmodel.TransactionViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -62,6 +65,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     private val transactionDao: TransactionDao by lazy {
         TransactionDatabase.getDatabase(requireContext()).getTransactionDao()
     }
+    private lateinit var mTransactionViewModel: TransactionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +80,8 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+
 
         val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -98,9 +104,12 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     }
 
     private fun runOnItemClicked() {
-        thread {
-            val transactions = transactionDao.getAllTransactions()
-            val adapter = TransactionsAdapter(transactions)
+//            val transactions = transactionDao.getAllTransactions()
+            val adapter = TransactionsAdapter()
+            mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
+            mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                transaction -> adapter.setData(transaction)
+            })
             requireActivity().runOnUiThread {
 
                 binding.recyclerView.adapter = adapter
@@ -118,7 +127,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
                     )
                 }
             }
-        }
+        
     }
 
     private fun transactionToBundle(model: Transaction): Bundle {
@@ -134,12 +143,11 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     }
 
     private fun fetchAllTransactions() {
-        val transactions = transactionDao.getAllTransactions()
-            requireActivity().runOnUiThread {
-                binding.recyclerView.adapter = TransactionsAdapter(
-                    transactions = transactions
-                )
-            }
+        val adapter = TransactionsAdapter()
+        mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
+        mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer {
+                transaction -> adapter.setData(transaction)
+        })
     }
 
     override fun onTransactionUpdated(transaction: Transaction) {

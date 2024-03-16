@@ -1,5 +1,7 @@
 package com.sleepee.bondoman.data.model
 
+import androidx.lifecycle.LiveData
+
 class TransactionRepository(private val transactionDao: TransactionDao) {
-    val readAllData = transactionDao.getAllTransactions()
+    val readAllData: LiveData<List<Transaction>> = transactionDao.getAllTransactions()
 }

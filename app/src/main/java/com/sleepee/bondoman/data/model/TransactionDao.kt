@@ -1,5 +1,6 @@
 package com.sleepee.bondoman.data.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -13,7 +14,7 @@ interface TransactionDao {
     fun createTransaction(transaction: Transaction)
 
     @Query("SELECT * FROM `transaction`")
-    fun getAllTransactions(): List<Transaction>
+    fun getAllTransactions(): LiveData<List<Transaction>>
 
     @Update
     fun updateTransaction(transaction: Transaction)
