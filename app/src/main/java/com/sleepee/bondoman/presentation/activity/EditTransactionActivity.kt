@@ -1,8 +1,13 @@
 package com.sleepee.bondoman.presentation.activity
 
+import android.R
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.databinding.ActivityEditTransactionBinding
 
@@ -29,6 +34,7 @@ class EditTransactionActivity: BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupUI(extras: Bundle?) {
+        setupBackButton()
         if (extras != null) {
             binding.categoryTextview.text = "Kategori: ${extras.getString(EDIT_TRANSACTION_CATEGORY)}"
             if (extras.getString(EDIT_TRANSACTION_CATEGORY) == "Pemasukan") {
@@ -41,5 +47,31 @@ class EditTransactionActivity: BaseActivity() {
             binding.amountEditText.setText(extras.getInt(EDIT_TRANSACTION_AMOUNT).toString())
             binding.locationEditText.setText(extras.getString(EDIT_TRANSACTION_LOCATION))
         }
+    }
+
+    private fun setupBackButton() {
+        onBackPressedDispatcher.addCallback {
+            createConfirmationDialog()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.home) {
+            createConfirmationDialog()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Reset data")
+            .setMessage("Are you sure you want to discard all changes?")
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 }

@@ -90,7 +90,8 @@ class AddTransactionActivity: BaseActivity() {
             .setTitle("Reset data")
             .setMessage("Are you sure you want to discard all changes?")
             .setPositiveButton("Yes") { _, _ ->
-                finish()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
             .setNegativeButton("No", null)
             .show()

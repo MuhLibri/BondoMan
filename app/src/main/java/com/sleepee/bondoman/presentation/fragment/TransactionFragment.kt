@@ -38,6 +38,12 @@ import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_DATE
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION_LINK
 import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.Locale
 import kotlin.concurrent.thread
 
@@ -70,28 +76,16 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
 
         super.onViewCreated(view, savedInstanceState)
 
-        fetchAllTransactions()
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-        thread {
-            val transactions = transactionDao.getAllTransactions()
-            val adapter = TransactionsAdapter(transactions)
-            requireActivity().runOnUiThread {
-                binding.recyclerView.layoutManager = LinearLayoutManager(context)
-                binding.recyclerView.setHasFixedSize(true)
-                binding.recyclerView.adapter = adapter
-
-                adapter.setOnClickListener(object :
-                    TransactionsAdapter.OnClickListener {
-                    override fun onClick(position: Int, model: Transaction) {
-                        val intent = Intent(activity, EditTransactionActivity::class.java)
-                        val extras = transactionToBundle(model)
-                        intent.putExtras(extras)
-                        startActivity(intent)
-                    }
-                }
-                )
-            }
+        coroutineScope.launch {
+            fetchAllTransactions()
         }
+        coroutineScope.cancel()
+
+//        fetchAllTransactions()
+
+        runOnItemClicked()
 
         // Initialize FusedLocationProviderClient to detect current user's location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -99,6 +93,30 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
         // Happens when user presses on the plus button
         binding.fab.setOnClickListener {
             getLastLocation()
+        }
+    }
+
+    private fun runOnItemClicked() {
+        thread {
+            val transactions = transactionDao.getAllTransactions()
+            val adapter = TransactionsAdapter(transactions)
+            requireActivity().runOnUiThread {
+
+                binding.recyclerView.adapter = adapter
+
+                runBlocking {
+                    adapter.setOnClickListener(object :
+                        TransactionsAdapter.OnClickListener {
+                        override fun onClick(position: Int, model: Transaction) {
+                            val intent = Intent(activity, EditTransactionActivity::class.java)
+                            val extras = transactionToBundle(model)
+                            intent.putExtras(extras)
+                            startActivity(intent)
+                        }
+                    }
+                    )
+                }
+            }
         }
     }
 
@@ -113,16 +131,13 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
         return extras
     }
 
-    fun fetchAllTransactions() {
-        thread {
+    private fun fetchAllTransactions() {
             val transactions = transactionDao.getAllTransactions()
             requireActivity().runOnUiThread {
                 binding.recyclerView.adapter = TransactionsAdapter(
                     transactions = transactions
                 )
             }
-
-        }
     }
 
     override fun onTransactionUpdated(transaction: Transaction) {
