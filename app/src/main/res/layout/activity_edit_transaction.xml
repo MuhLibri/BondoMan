@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/category"
+        android:id="@+id/category_textview"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -22,7 +22,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/date_text"
+        android:id="@+id/date_textview"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -46,7 +46,7 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/title"
+        android:id="@+id/title_edit_text"
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
@@ -75,7 +75,7 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/amount"
+        android:id="@+id/amount_edit_text"
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
@@ -104,24 +104,23 @@
         tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/location"
+        android:id="@+id/location_edit_text"
         android:layout_width="320dp"
         android:layout_height="96dp"
+        android:singleLine="false"
         android:layout_gravity="center"
-        android:textColor="@color/black"
+        android:inputType="textMultiLine"
         android:layout_marginTop="8dp"
-        android:autofillHints="password"
-        android:inputType="none"
         android:background="@color/light_blue"
         android:paddingHorizontal="8dp"
-        android:enabled="false"
         android:paddingVertical="4dp"
         android:textCursorDrawable="@drawable/black_cursor"
         android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:autofillHints="location" />
 
     <Button
-        android:id="@+id/addTransactionButton"
+        android:id="@+id/saveTransactionButton"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

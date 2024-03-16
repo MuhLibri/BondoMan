@@ -15,28 +15,36 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
+import com.sleepee.bondoman.presentation.activity.EditTransactionActivity
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LOCATION
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LATITUDE
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LONGITUDE
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_TITLE
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_AMOUNT
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_CATEGORY
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_DATE
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_LOCATION_LINK
 import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
 import java.util.Locale
 import kotlin.concurrent.thread
 
 const val REQUEST_CODE = 100
 
-
 @Suppress("DEPRECATION")
-class TransactionFragment : Fragment() {
+class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedListener {
 
     private lateinit var binding: FragmentTransactionBinding
     private var address = "Institut Teknologi Bandung"
@@ -64,13 +72,45 @@ class TransactionFragment : Fragment() {
 
         fetchAllTransactions()
 
+        thread {
+            val transactions = transactionDao.getAllTransactions()
+            val adapter = TransactionsAdapter(transactions)
+            requireActivity().runOnUiThread {
+                binding.recyclerView.layoutManager = LinearLayoutManager(context)
+                binding.recyclerView.setHasFixedSize(true)
+                binding.recyclerView.adapter = adapter
+
+                adapter.setOnClickListener(object :
+                    TransactionsAdapter.OnClickListener {
+                    override fun onClick(position: Int, model: Transaction) {
+                        val intent = Intent(activity, EditTransactionActivity::class.java)
+                        val extras = transactionToBundle(model)
+                        intent.putExtras(extras)
+                        startActivity(intent)
+                    }
+                }
+                )
+            }
+        }
+
         // Initialize FusedLocationProviderClient to detect current user's location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
         // Happens when user presses on the plus button
         binding.fab.setOnClickListener {
             getLastLocation()
-
         }
+    }
+
+    private fun transactionToBundle(model: Transaction): Bundle {
+        val extras = Bundle()
+        extras.putString(EDIT_TRANSACTION_TITLE, model.title)
+        extras.putInt(EDIT_TRANSACTION_AMOUNT, model.amount)
+        extras.putString(EDIT_TRANSACTION_CATEGORY, model.category)
+        extras.putString(EDIT_TRANSACTION_LOCATION, model.location)
+        extras.putString(EDIT_TRANSACTION_DATE, model.date)
+        extras.putString(EDIT_TRANSACTION_LOCATION_LINK, model.locationLink)
+        return extras
     }
 
     fun fetchAllTransactions() {
@@ -81,6 +121,13 @@ class TransactionFragment : Fragment() {
                     transactions = transactions
                 )
             }
+
+        }
+    }
+
+    override fun onTransactionUpdated(transaction: Transaction) {
+        thread {
+            transactionDao.updateTransaction(transaction)
         }
     }
 
@@ -170,6 +217,8 @@ class TransactionFragment : Fragment() {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+
 
 
 }

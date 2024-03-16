@@ -34,6 +34,9 @@
             android:name=".presentation.activity.AddTransactionActivity"
             android:parentActivityName=".presentation.activity.MainActivity"
             tools:ignore="Instantiatable" />
+        <activity android:name=".presentation.activity.EditTransactionActivity"
+            android:parentActivityName=".presentation.activity.MainActivity"
+            tools:ignore="Instantiatable"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

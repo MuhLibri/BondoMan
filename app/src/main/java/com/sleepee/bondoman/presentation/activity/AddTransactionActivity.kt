@@ -153,11 +153,6 @@ class AddTransactionActivity: BaseActivity() {
                 id: Long
             ) {
                 selectedItem = parent?.getItemAtPosition(position).toString()
-                Toast.makeText(
-                    this@AddTransactionActivity,
-                    "this is $selectedItem",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
