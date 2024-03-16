@@ -127,6 +127,7 @@ class AddTransactionActivity: BaseActivity() {
         thread {
             transactionDao.createTransaction(transaction)
         }
+        Toast.makeText(this, "Transaction created successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

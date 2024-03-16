@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import com.sleepee.bondoman.data.model.Transaction
@@ -54,7 +55,7 @@ class EditTransactionActivity : BaseActivity() {
             val amount = binding.amountEditText
             val location = binding.locationEditText
 
-            validateAddActivity(title, amount, location)
+            validateEditActivity(title, amount, location)
         }
         binding.deleteTransactionButton.setOnClickListener {
             createDeleteDialog()
@@ -71,11 +72,12 @@ class EditTransactionActivity : BaseActivity() {
         thread {
             transactionDao.deleteTransaction(transaction = transaction)
         }
+        Toast.makeText(this, "Transaction deleted successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
-    private fun validateAddActivity(
+    private fun validateEditActivity(
         title: EditText,
         amount: EditText,
         location: EditText,
@@ -106,6 +108,7 @@ class EditTransactionActivity : BaseActivity() {
         thread {
             transactionDao.updateTransaction(transaction = transaction)
         }
+        Toast.makeText(this, "Transaction edited successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

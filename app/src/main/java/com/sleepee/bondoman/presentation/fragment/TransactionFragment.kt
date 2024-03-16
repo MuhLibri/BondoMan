@@ -127,7 +127,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
                     )
                 }
             }
-        
+
     }
 
     private fun transactionToBundle(model: Transaction): Bundle {

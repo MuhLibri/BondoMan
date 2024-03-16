@@ -107,17 +107,18 @@
         android:id="@+id/location_edit_text"
         android:layout_width="320dp"
         android:layout_height="96dp"
-        android:singleLine="false"
         android:layout_gravity="center"
-        android:inputType="textMultiLine"
         android:layout_marginTop="8dp"
+        android:autofillHints="location"
         android:background="@color/light_blue"
+        android:fontFamily="@font/inter_regular"
+        android:inputType="textMultiLine"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
+        android:singleLine="false"
         android:textCursorDrawable="@drawable/black_cursor"
         android:textSize="20sp"
-        tools:ignore="HardcodedText"
-        android:autofillHints="location" />
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/saveTransactionButton"
