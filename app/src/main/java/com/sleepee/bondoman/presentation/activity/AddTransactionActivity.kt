@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
@@ -122,14 +123,28 @@ class AddTransactionActivity: BaseActivity() {
 
         val formattedDate = getCurrentDate()
 
-        val transaction = Transaction(
-            title = title.text.toString(), amount = amount.text.toString().toInt(), category = selectedItem, date = formattedDate.toString(), location = location.text.toString()
-        )
+        val transaction = convertToTransaction(title, amount, formattedDate, location)
         thread {
             transactionDao.createTransaction(transaction)
         }
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun convertToTransaction(
+        title: EditText,
+        amount: EditText,
+        formattedDate: String?,
+        location: EditText
+    ): Transaction {
+        val transaction = Transaction(
+            title = title.text.toString(),
+            amount = amount.text.toString().toInt(),
+            category = selectedItem,
+            date = formattedDate.toString(),
+            location = location.text.toString()
+        )
+        return transaction
     }
 
 

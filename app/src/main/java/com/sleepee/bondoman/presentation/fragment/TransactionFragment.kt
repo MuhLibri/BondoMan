@@ -25,9 +25,11 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
+import com.sleepee.bondoman.data.model.TransactionRepository
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.EditTransactionActivity
+import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_ID
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LOCATION
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LATITUDE
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LONGITUDE
@@ -60,7 +62,6 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     private val transactionDao: TransactionDao by lazy {
         TransactionDatabase.getDatabase(requireContext()).getTransactionDao()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,6 +123,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
 
     private fun transactionToBundle(model: Transaction): Bundle {
         val extras = Bundle()
+        extras.putInt(EDIT_TRANSACTION_ID, model.transactionId)
         extras.putString(EDIT_TRANSACTION_TITLE, model.title)
         extras.putInt(EDIT_TRANSACTION_AMOUNT, model.amount)
         extras.putString(EDIT_TRANSACTION_CATEGORY, model.category)
@@ -132,7 +134,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.TransactionUpdatedLi
     }
 
     private fun fetchAllTransactions() {
-            val transactions = transactionDao.getAllTransactions()
+        val transactions = transactionDao.getAllTransactions()
             requireActivity().runOnUiThread {
                 binding.recyclerView.adapter = TransactionsAdapter(
                     transactions = transactions
