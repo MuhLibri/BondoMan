@@ -1,17 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/white"
-        android:text="This is the scan fragment"/>
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:text="Scan your own bill here!"
+            android:textAlignment="center"
+            android:textColor="@color/light_blue"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/camera_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_blue"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="Camera"
+                android:textColor="@color/darker_blue" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/gallery_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_blue"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="Gallery"
+                android:textColor="@color/darker_blue" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/scanned_image"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/cat_placeholder_min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scan_button"
+            android:layout_width="match_parent"
+            android:textColor="@color/darker_blue"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/light_blue"
+            android:fontFamily="@font/inter_semi_bold"
+            android:layout_height="wrap_content"
+            android:text="Scan"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

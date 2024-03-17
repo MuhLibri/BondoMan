@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sleepee.bondoman"
-        minSdk = 30
+        minSdk = 34
         targetSdk = 34
         //noinspection ExpiredTargetSdkVersion
         versionCode = 1
@@ -51,6 +51,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
+
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     // Room dependencies
     val room_version = "2.6.1"
