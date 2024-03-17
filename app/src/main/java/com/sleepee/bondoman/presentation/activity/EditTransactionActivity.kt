@@ -48,6 +48,7 @@ class EditTransactionActivity : BaseActivity() {
     }
 
     private fun setupUI() {
+        title = "Edit Transaction"
         val extras = intent.extras
         setupBackButton()
         getTransactionExtras(extras)

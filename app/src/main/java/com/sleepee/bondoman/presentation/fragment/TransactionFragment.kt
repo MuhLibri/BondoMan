@@ -106,16 +106,16 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
 
                 binding.recyclerView.adapter = adapter
 
-                    adapter.setOnClickListener(object :
-                        TransactionsAdapter.OnClickListener {
-                        override fun onClick(position: Int, model: Transaction) {
-                            val intent = Intent(activity, EditTransactionActivity::class.java)
-                            val extras = transactionToBundle(model)
-                            intent.putExtras(extras)
-                            startActivity(intent)
-                        }
+                adapter.setOnClickListener(object :
+                    TransactionsAdapter.OnClickListener {
+                    override fun onClick(position: Int, model: Transaction) {
+                        val intent = Intent(activity, EditTransactionActivity::class.java)
+                        val extras = transactionToBundle(model)
+                        intent.putExtras(extras)
+                        startActivity(intent)
                     }
-                    )
+                }
+                )
 
             }
 
