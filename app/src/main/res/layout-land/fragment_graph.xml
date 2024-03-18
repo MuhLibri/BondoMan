@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:text="This is the graph fragment"/>-->
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.495">
+
+    </com.github.mikephil.charting.charts.PieChart>
+
+    <ImageView
+        android:id="@+id/pemasukan"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/green_circle"
+        app:layout_constraintBottom_toBottomOf="@+id/pieChart"
+        app:layout_constraintStart_toEndOf="@+id/pieChart"
+        app:layout_constraintTop_toTopOf="@+id/pieChart" />
+
+    <ImageView
+        android:id="@+id/pengeluaran"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/red_circle"
+        app:layout_constraintStart_toStartOf="@+id/pemasukan"
+        app:layout_constraintTop_toBottomOf="@+id/pemasukan" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/white"
+        android:text="Pemasukan"
+        app:layout_constraintBottom_toBottomOf="@+id/pemasukan"
+        app:layout_constraintStart_toEndOf="@+id/pemasukan"
+        app:layout_constraintTop_toTopOf="@+id/pemasukan" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/white"
+        android:text="Pengeluaran"
+        app:layout_constraintBottom_toBottomOf="@+id/pengeluaran"
+        app:layout_constraintStart_toEndOf="@+id/pengeluaran"
+        app:layout_constraintTop_toTopOf="@+id/pengeluaran" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
