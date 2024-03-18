@@ -92,6 +92,13 @@ class EditTransactionActivity : BaseActivity() {
             amount.error = "Amount cannot be blank"
             return
         }
+        if (amount.text.toString().toIntOrNull() == null) {
+            amount.error = "Amount is invalid"
+        }
+        if (amount.text.toString()[0] == '0') {
+            amount.error = "Amount must not be 0"
+            return
+        }
         if (location.length() == 0) {
             location.error = "Location cannot be blank"
             return
@@ -100,10 +107,7 @@ class EditTransactionActivity : BaseActivity() {
             amount.error = "Amount must be an integer"
             return
         }
-        if (amount.text.toString()[0] == '0') {
-            amount.error = "Amount must not be 0/amount is invalid"
-            return
-        }
+
 
         val transaction = convertToTransaction(id, title, amount, location, category, date)
 

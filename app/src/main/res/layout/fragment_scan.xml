@@ -59,14 +59,14 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/scan_button"
+            android:id="@+id/add_transaction_button"
             android:layout_width="match_parent"
             android:textColor="@color/darker_blue"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/light_blue"
             android:fontFamily="@font/inter_semi_bold"
             android:layout_height="wrap_content"
-            android:text="Scan"/>
+            android:text="Add To Transaction"/>
 
 
 
