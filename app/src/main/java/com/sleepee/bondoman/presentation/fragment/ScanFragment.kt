@@ -40,6 +40,9 @@ class ScanFragment: Fragment() {
                     if (data != null) {
                         imageUri = data.data
                         binding.scannedImage.setImageURI(imageUri)
+                        binding.addTransactionButton.visibility = View.VISIBLE
+                        binding.cameraButton.text = "Retake Camera"
+                        binding.galleryButton.text = "Retake Gallery"
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -58,6 +61,9 @@ class ScanFragment: Fragment() {
                 val data = result.data
                 if (data != null) {
                     binding.scannedImage.setImageURI(imageUri)
+                    binding.addTransactionButton.visibility = View.VISIBLE
+                    binding.cameraButton.text = "Retake Camera"
+                    binding.galleryButton.text = "Retake Gallery"
                 } else {
                     Toast.makeText(
                         requireContext(),

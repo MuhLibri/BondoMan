@@ -29,8 +29,8 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
             binding.price.text = "Rp. ${transaction.amount.toString()}"
             binding.category.text = transaction.category
             if (binding.category.text.toString() == "Pemasukan") {
-                binding.category.setTextColor(Color.parseColor("#87A922"))
-                binding.price.setTextColor(Color.parseColor("#87A922"))
+                binding.category.setTextColor(Color.parseColor("#306844"))
+                binding.price.setTextColor(Color.parseColor("#306844"))
             } else {
                 binding.category.setTextColor(Color.parseColor("#FF004D"))
                 binding.price.setTextColor(Color.parseColor("#FF004D"))

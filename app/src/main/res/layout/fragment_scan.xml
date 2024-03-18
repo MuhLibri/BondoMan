@@ -16,7 +16,7 @@
             android:fontFamily="@font/inter_bold"
             android:text="Scan your own bill here!"
             android:textAlignment="center"
-            android:textColor="@color/light_blue"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -56,7 +56,7 @@
             android:layout_marginTop="10dp"
             android:src="@drawable/cat_placeholder_min"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="400dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_transaction_button"
