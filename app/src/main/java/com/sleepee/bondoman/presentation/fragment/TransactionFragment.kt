@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -50,7 +51,6 @@ import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 
-
 const val REQUEST_CODE = 100
 
 @Suppress("DEPRECATION")
@@ -58,8 +58,8 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
 
     private lateinit var binding: FragmentTransactionBinding
     private var address = "Institut Teknologi Bandung"
-    private var currentLatitude : Double ?= null
-    private var currentLongitude : Double ?= null
+    private var currentLatitude: Double? = null
+    private var currentLongitude: Double? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mTransactionViewModel: TransactionViewModel
 
@@ -95,30 +95,37 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         }
     }
 
+
     private fun runOnItemClicked() {
 //            val transactions = transactionDao.getAllTransactions()
-            val adapter = TransactionsAdapter(listener = this)
+        val adapter = TransactionsAdapter(listener = this)
 
-            mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
-            mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-                transaction -> adapter.setData(transaction)
-            })
-            requireActivity().runOnUiThread {
+        mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
+        mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
+            adapter.setData(transaction)
+        })
+        mTransactionViewModel.getCount().observe(viewLifecycleOwner, Observer { count ->
+            adapter.setDataCount(count)
+        })
+        Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
+        requireActivity().runOnUiThread {
 
-                binding.recyclerView.adapter = adapter
+            binding.recyclerView.adapter = adapter
 
-                adapter.setOnClickListener(object :
-                    TransactionsAdapter.OnClickListener {
-                    override fun onClick(position: Int, model: Transaction) {
-                        val intent = Intent(activity, EditTransactionActivity::class.java)
-                        val extras = transactionToBundle(model)
-                        intent.putExtras(extras)
-                        startActivity(intent)
-                    }
+
+
+            adapter.setOnClickListener(object :
+                TransactionsAdapter.OnClickListener {
+                override fun onClick(position: Int, model: Transaction) {
+                    val intent = Intent(activity, EditTransactionActivity::class.java)
+                    val extras = transactionToBundle(model)
+                    intent.putExtras(extras)
+                    startActivity(intent)
                 }
-                )
-
             }
+            )
+
+        }
 
     }
 
@@ -144,9 +151,13 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
     private fun fetchAllTransactions() {
         val adapter = TransactionsAdapter(listener = this)
         mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-                transaction -> adapter.setData(transaction)
+        mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
+            adapter.setData(transaction)
         })
+        mTransactionViewModel.getCount().observe(viewLifecycleOwner, Observer { count ->
+            adapter.setDataCount(count)
+        })
+        Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
 
     }
 
@@ -185,10 +196,14 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         // If location in the settings is enabled, add transactions.
         if (isLocationEnabled()) {
             // detect current location of the phone using FusedLocationProviderClient
-            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_LOW_POWER, object : CancellationToken() {
-                override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
-                override fun isCancellationRequested() = false
-            })
+            fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_LOW_POWER,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                        CancellationTokenSource().token
+
+                    override fun isCancellationRequested() = false
+                })
                 .addOnCompleteListener(requireActivity()) { task ->
                     val location: Location? = task.result
                     // do reverse geocoding using geocoder based on the latitude + longitude from FusedLocationProviderClient
@@ -237,8 +252,6 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
-
 
 
 }

@@ -21,6 +21,7 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
 
     private var onClickListener: OnClickListener? = null
     private var transactions = emptyList<Transaction>()
+    private var data : Int = 0
 
     inner class ViewHolder(private val binding: TransactionCardBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -49,7 +50,7 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
         fun onLocationButtonPressed(transaction: Transaction)
     }
 
-    override fun getItemCount() = transactions.size
+    override fun getItemCount() = data
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TransactionCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -70,6 +71,12 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setDataCount(data: Int) {
+        this.data = data
+        notifyDataSetChanged()
+    }
+
     fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
@@ -77,20 +84,6 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
     // onClickListener Interface
     interface OnClickListener {
         fun onClick(position: Int, model: Transaction)
-    }
-
-
-
-    interface TransactionGetListener {
-        fun getTransaction(transaction: Transaction)
-    }
-
-    interface TransactionUpdatedListener {
-        fun onTransactionUpdated(transaction: Transaction)
-    }
-
-    interface TransactionDeletedListener {
-        fun onTransactionDeleted(transaction: Transaction)
     }
 
 

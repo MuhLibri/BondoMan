@@ -67,7 +67,7 @@ class ScanFragment: Fragment() {
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Cancelled",
+                        "Okay",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
