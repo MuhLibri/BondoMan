@@ -19,7 +19,7 @@ import com.sleepee.bondoman.databinding.FragmentGraphBinding
 
 class GraphFragment: Fragment() {
     private lateinit var binding: FragmentGraphBinding
-    lateinit var pieChart: PieChart
+    private lateinit var pieChart: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
