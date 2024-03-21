@@ -32,6 +32,7 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
 
         when (intent?.extras?.getString("twibbon-load")) {
             "twibbon-fragment" -> {
+                binding.bottomNav.selectedItemId = R.id.nav_twibbon
                     supportFragmentManager.commit {
                         replace(R.id.frame_content, TwibbonFragment())
                     }
