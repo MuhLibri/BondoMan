@@ -5,9 +5,13 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +22,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.vision.common.InputImage
+import com.sleepee.bondoman.data.model.LoginRequest
+import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.databinding.FragmentScanBinding
+import com.sleepee.bondoman.network.api.LoginApiService
+import com.sleepee.bondoman.network.api.RetrofitClient
+import com.sleepee.bondoman.network.api.ScanApiService
+import com.sleepee.bondoman.presentation.activity.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.Exception
 
 const val CAMERA_REQUEST_CODE = 100
@@ -31,6 +50,8 @@ class ScanFragment: Fragment() {
     private var cameraPermissions = listOf<String>()
     private var imagePermissions = listOf<String>()
     private var imageUri : Uri? = null
+    private lateinit var outputFile: File
+    private val scanService : ScanApiService = RetrofitClient.Instance.create(ScanApiService::class.java)
     private var galleryActivityResultLauncher : ActivityResultLauncher<Intent> =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
@@ -143,11 +164,53 @@ class ScanFragment: Fragment() {
 
     private fun detectResultFromImage() {
         try {
-            val inputImage = imageUri?.let { InputImage.fromFilePath(requireContext(), it) }
+            changeUriToJpg()
+            sendImage()
+
+
 
         } catch (e: Exception) {
 
         }
+    }
+
+    private fun sendImage() {
+        val filePart = MultipartBody.Part.createFormData("file", outputFile.name, RequestBody.create(
+            MediaType.parse("image/*"), outputFile))
+        lifecycleScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                try {
+                    scanService.uploadAttachment(filePart)
+                } catch (e: Exception) {
+                    Log.e("LoginActivity", "Login failed: ${e.message}")
+                    null
+                }
+            }
+
+            if (res != null && res.isSuccessful && res.body() != null){
+//                val token = res.body()!!.token
+//                TokenManager.storeToken(token)
+//                Log.d("LoginActivity", "Login success with token $token")
+                val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(mainActivityIntent)
+            } else {
+                Toast.makeText(requireContext(), "Login failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun changeUriToJpg() {
+        val inputStream = imageUri?.let { requireContext().contentResolver.openInputStream(it) }
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+
+        val outputDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        outputFile = File(outputDir, "file.jpg")
+
+        val outputStream = FileOutputStream(outputFile)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+
+        outputStream.close()
+        inputStream?.close()
     }
 
     private fun grabImageFromGallery() {

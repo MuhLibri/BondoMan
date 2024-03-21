@@ -13,6 +13,7 @@ import com.sleepee.bondoman.presentation.fragment.GraphFragment
 import com.sleepee.bondoman.presentation.fragment.ScanFragment
 import com.sleepee.bondoman.presentation.fragment.SettingsFragment
 import com.sleepee.bondoman.presentation.fragment.TransactionFragment
+import com.sleepee.bondoman.presentation.fragment.TwibbonFragment
 
 class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -27,6 +28,15 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
 
         supportFragmentManager.commit {
             add(R.id.frame_content, TransactionFragment())
+        }
+
+        when (intent?.extras?.getString("twibbon-load")) {
+            "twibbon-fragment" -> {
+                    supportFragmentManager.commit {
+                        replace(R.id.frame_content, TwibbonFragment())
+                    }
+                    true
+            }
         }
 
         // Handle back button => Minimize the app, no logout
@@ -61,6 +71,12 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
             R.id.nav_settings -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, SettingsFragment())
+                }
+                true
+            }
+            R.id.nav_twibbon -> {
+                supportFragmentManager.commit {
+                    replace(R.id.frame_content, TwibbonFragment())
                 }
                 true
             }

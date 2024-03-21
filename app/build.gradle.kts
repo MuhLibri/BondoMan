@@ -51,6 +51,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
+    api("com.otaliastudios:cameraview:2.7.2")
 
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 

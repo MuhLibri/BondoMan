@@ -8,6 +8,10 @@
         android:title="@string/scan"
         android:icon="@drawable/bx_scan"/>
 
+    <item android:id="@+id/nav_twibbon"
+        android:title="@string/twibbon"
+        android:icon="@drawable/baseline_camera_24"/>
+
     <item android:id="@+id/nav_graph"
         android:title="@string/graph"
         android:icon="@drawable/bx_pie_chart_alt_2"/>
