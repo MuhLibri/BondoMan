@@ -42,49 +42,52 @@ class SaveTransactionDialogFragment : DialogFragment() {
 
     private fun saveTransaction(fileName: String, format: String) {
         try {
+            val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
             val workbook = if (format == ".xls") HSSFWorkbook() else XSSFWorkbook()
             val workSheet = workbook.createSheet()
-            val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
-
-            // Header Font
-            val headerFont: Font = workbook.createFont()
-            headerFont.color = IndexedColors.WHITE.index
-
-            // Header Style
-            val headerStyle = workbook.createCellStyle()
-            headerStyle.alignment = HorizontalAlignment.CENTER
-            headerStyle.fillForegroundColor = IndexedColors.VIOLET.index
-            headerStyle.fillPattern = FillPatternType.SOLID_FOREGROUND
-            headerStyle.setFont(headerFont)
 
             // Header
             val row0 = workSheet.createRow(0)
             // Col 0
-            var cell0 = row0.createCell(0)
+            val cell0 = row0.createCell(0)
             cell0.setCellValue("Date")
-            cell0.cellStyle = headerStyle
             workSheet.setColumnWidth(0, (cell0.stringCellValue.length + 10) * 256)
             // Col 1
-            var cell1 = row0.createCell(1)
+            val cell1 = row0.createCell(1)
             cell1.setCellValue("Category")
-            cell1.cellStyle = headerStyle
             workSheet.setColumnWidth(1, (cell1.stringCellValue.length + 5) * 256)
             // Col 2
-            var cell2 = row0.createCell(2)
+            val cell2 = row0.createCell(2)
             cell2.setCellValue("Amount")
-            cell2.cellStyle = headerStyle
             workSheet.setColumnWidth(2, (cell2.stringCellValue.length + 10) * 256)
             // Col 3
-            var cell3 = row0.createCell(3)
+            val cell3 = row0.createCell(3)
             cell3.setCellValue("Title")
-            cell3.cellStyle = headerStyle
             workSheet.setColumnWidth(3, (cell3.stringCellValue.length + 15) * 256)
             // Col 4
-            var cell4 = row0.createCell(4)
+            val cell4 = row0.createCell(4)
             cell4.setCellValue("Location")
-            cell4.cellStyle = headerStyle
             workSheet.setColumnWidth(4, (cell4.stringCellValue.length + 25) * 256)
 
+            if (format == ".xlsx") {
+                // Header Font
+                val headerFont: Font = workbook.createFont()
+                headerFont.color = IndexedColors.WHITE.index
+
+                // Header Style
+                val headerStyle = workbook.createCellStyle()
+                headerStyle.alignment = HorizontalAlignment.CENTER
+                headerStyle.fillForegroundColor = IndexedColors.VIOLET.index
+                headerStyle.fillPattern = FillPatternType.SOLID_FOREGROUND
+                headerStyle.setFont(headerFont)
+
+                // Setting Header Style
+                cell0.cellStyle = headerStyle
+                cell1.cellStyle = headerStyle
+                cell2.cellStyle = headerStyle
+                cell3.cellStyle = headerStyle
+                cell4.cellStyle = headerStyle
+            }
             // Dummy
             // -------------------------------------------------------------------------------------
             val t1 = TransactionModel("27/03/2024", "Pemasukan", 20000, "Kerja", "Jl. Jendral Sudirman No 12, Bandung")
