@@ -1,8 +1,11 @@
 package com.sleepee.bondoman.presentation.fragment
 
 import android.Manifest
+import android.R.attr.name
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -12,21 +15,25 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.sleepee.bondoman.R
 import com.sleepee.bondoman.data.model.Transaction
+import com.sleepee.bondoman.data.model.TransactionDao
+import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_AMOUNT
@@ -40,6 +47,7 @@ import com.sleepee.bondoman.presentation.activity.EditTransactionActivity
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LATITUDE
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LOCATION
 import com.sleepee.bondoman.presentation.activity.INTENT_EXTRA_LONGITUDE
+import com.sleepee.bondoman.presentation.activity.MainActivity
 import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
 import com.sleepee.bondoman.presentation.viewmodel.TransactionViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +55,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.util.Locale
+import kotlin.concurrent.thread
 
 
 const val REQUEST_CODE = 100
@@ -60,6 +69,12 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
     private var currentLongitude: Double? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mTransactionViewModel: TransactionViewModel
+    private lateinit var database: TransactionDatabase
+    private val transactionDao: TransactionDao by lazy {
+        database.getTransactionDao()
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,6 +89,8 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        database = TransactionDatabase.getDatabase(requireContext())
 
         val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -93,10 +110,31 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         binding.fab.setOnClickListener {
             val intent = Intent(activity, AddTransactionActivity::class.java)
             intent.putExtra(INTENT_EXTRA_LOCATION, address)
+            Log.d("address", "address: $address")
             intent.putExtra(INTENT_EXTRA_LATITUDE, currentLatitude)
             intent.putExtra(INTENT_EXTRA_LONGITUDE, currentLongitude)
             startActivity(intent)
         }
+
+        // Happens when the user presses on the trash button
+        binding.fabClearTransactions.setOnClickListener {
+            createConfirmationDialog()
+        }
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+
+        // write all the data entered by the user in SharedPreference and apply
+        myEdit.putString("location", address)
+        myEdit.apply()
+
+        Log.d("address", "address: $address")
     }
 
 
@@ -263,6 +301,19 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun createConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Clear all transactions")
+            .setMessage("Are you sure you want to clear all transactions?")
+            .setPositiveButton("Yes") { _, _ ->
+                thread {
+                    transactionDao.deleteAllTransactions()
+                }
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
 

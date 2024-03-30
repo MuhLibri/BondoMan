@@ -3,6 +3,7 @@ package com.sleepee.bondoman.presentation.fragment
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -55,6 +56,7 @@ class ScanFragment: Fragment() {
     private var cameraPermissions = listOf<String>()
     private var imagePermissions = listOf<String>()
     private var imageUri : Uri? = null
+    private lateinit var location: String
     private var token: String = "Bearer ${TokenManager.getToken()}"
     private lateinit var outputFile: File
     private lateinit var database: TransactionDatabase
@@ -120,6 +122,9 @@ class ScanFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         database = TransactionDatabase.getDatabase(requireContext())
+
+        val sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        location = sh.getString("location", "").toString()
 
         setupPermissions()
         setupUI()
@@ -198,7 +203,7 @@ class ScanFragment: Fragment() {
                 val items = res.body()!!.itemsList
                 Log.d("ScanResults", "Scan success with ${items.items[0]}")
                 for (dummyTransaction in items.items) {
-                    val transaction = TransactionUtils.convertToTransaction(dummyTransaction.name, dummyTransaction.price.toInt(), TransactionUtils.getCurrentDate(), "Museum Geologi Bandung", "Pemasukan")
+                    val transaction = TransactionUtils.convertToTransaction(dummyTransaction.name, dummyTransaction.price.toInt(), TransactionUtils.getCurrentDate(), location, "Pemasukan")
                     thread {
                         transactionDao.createTransaction(transaction)
                     }

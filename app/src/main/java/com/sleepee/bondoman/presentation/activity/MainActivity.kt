@@ -1,9 +1,8 @@
 package com.sleepee.bondoman.presentation.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import com.google.android.material.navigation.NavigationBarView
@@ -48,6 +47,7 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
         })
 
     }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

@@ -30,4 +30,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/light_blue" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_clear_transactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="36dp"
+        android:backgroundTint="@color/red"
+        android:contentDescription="@string/delete_all_transactions"
+        android:outlineAmbientShadowColor="@color/black"
+        android:src="@drawable/baseline_delete_24"
+        app:backgroundTint="@color/red"
+        app:borderWidth="4dp"
+        app:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/black" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,6 @@
     <string name="graph">Graph</string>
     <string name="add_transaction">Add transaction</string>
     <string name="twibbon">Twibbon</string>
+    <string name="clear_all_transactions">Clear All Transactions</string>
+    <string name="delete_all_transactions">Delete all transactions</string>
 </resources>

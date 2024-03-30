@@ -58,10 +58,12 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(transactions[position])
-        holder.itemView.setOnClickListener {
-            if (onClickListener != null) {
-                onClickListener!!.onClick(position, transactions[position])
+        if (transactions.isNotEmpty()) {
+            holder.bind(transactions[position])
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(position, transactions[position])
+                }
             }
         }
     }
