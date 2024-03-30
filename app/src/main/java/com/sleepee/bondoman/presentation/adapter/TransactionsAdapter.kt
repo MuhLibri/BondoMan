@@ -21,7 +21,8 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
 
     private var onClickListener: OnClickListener? = null
     private var transactions = emptyList<Transaction>()
-    private var data : Int = 0
+    var pemasukan: Int = 0
+    var pengeluaran: Int = 0
 
     inner class ViewHolder(private val binding: TransactionCardBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -50,7 +51,7 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
         fun onLocationButtonPressed(transaction: Transaction)
     }
 
-    override fun getItemCount() = data
+    override fun getItemCount() = pengeluaran + pemasukan
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TransactionCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -72,8 +73,14 @@ class TransactionsAdapter(private val listener: LocationButtonListener): Recycle
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setDataCount(data: Int) {
-        this.data = data
+    fun setPemasukanCount(data: Int) {
+        this.pemasukan = data
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setPengeluaranCount(data: Int) {
+        this.pengeluaran = data
         notifyDataSetChanged()
     }
 

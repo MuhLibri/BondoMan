@@ -16,8 +16,11 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction`")
     fun getAllTransactions(): LiveData<List<Transaction>>
 
-    @Query("SELECT COUNT(transactionId) FROM `transaction`")
-    fun getTransactionCount(): LiveData<Int>
+    @Query("SELECT COUNT(transactionId) FROM `transaction` WHERE category = 'Pemasukan'")
+    fun getPemasukanCount(): LiveData<Int>
+
+    @Query("SELECT COUNT(transactionId) FROM `transaction` WHERE category = 'Pengeluaran'")
+    fun getPengeluaranCount(): LiveData<Int>
 
     @Update
     fun updateTransaction(transaction: Transaction)

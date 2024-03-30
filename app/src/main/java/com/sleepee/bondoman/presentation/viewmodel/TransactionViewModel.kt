@@ -20,6 +20,10 @@ class TransactionViewModel(application: Application): AndroidViewModel(applicati
         readAllData = repository.readAllData
     }
 
-    public val dataCount: LiveData<Int> = repository.getCount()
+    public val pemasukanCount: LiveData<Int>
+        get() = repository.getPemasukanCount()
+
+    public val pengeluaranCount: LiveData<Int>
+        get() = repository.getPengeluaranCount()
 
 }

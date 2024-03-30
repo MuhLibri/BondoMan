@@ -195,12 +195,6 @@ class ScanFragment: Fragment() {
             }
             Log.d("scanresults", "results: $res")
             if (res != null && res.isSuccessful && res.body() != null){
-
-//                val token = res.body()!!.token
-//                TokenManager.storeToken(token)
-//                Log.d("LoginActivity", "Login success with token $token")
-//                val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
-//                startActivity(mainActivityIntent)
                 val items = res.body()!!.itemsList
                 Log.d("ScanResults", "Scan success with ${items.items[0]}")
                 for (dummyTransaction in items.items) {

@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,7 @@ const val REQUEST_CODE = 100
 class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListener {
 
     private lateinit var binding: FragmentTransactionBinding
-    private var address = "Institut Teknologi Bandung"
+    var address = "Institut Teknologi Bandung"
     private var currentLatitude: Double? = null
     private var currentLongitude: Double? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -83,12 +84,18 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
 
         runOnItemClicked()
 
+        getLastLocation()
+
         // Initialize FusedLocationProviderClient to detect current user's location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         // Happens when user presses on the plus button
         binding.fab.setOnClickListener {
-            getLastLocation()
+            val intent = Intent(activity, AddTransactionActivity::class.java)
+            intent.putExtra(INTENT_EXTRA_LOCATION, address)
+            intent.putExtra(INTENT_EXTRA_LATITUDE, currentLatitude)
+            intent.putExtra(INTENT_EXTRA_LONGITUDE, currentLongitude)
+            startActivity(intent)
         }
     }
 
@@ -101,10 +108,14 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
         })
-        mTransactionViewModel.dataCount.observe(viewLifecycleOwner, Observer { count ->
-            adapter.setDataCount(count)
+        mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
+            adapter.setPemasukanCount(count)
+            Log.d("transactionsCount", "Pemasukan: ${adapter.pemasukan}")
         })
-        Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
+        mTransactionViewModel.pengeluaranCount.observe(viewLifecycleOwner, Observer { count ->
+            adapter.setPengeluaranCount(count)
+            Log.d("transactionsCount", "Pengeluaran: ${adapter.pengeluaran}")
+        })
         requireActivity().runOnUiThread {
 
             binding.recyclerView.adapter = adapter
@@ -152,15 +163,17 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
         })
-        mTransactionViewModel.dataCount.observe(viewLifecycleOwner, Observer { count ->
-            adapter.setDataCount(count)
+        mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
+            adapter.setPemasukanCount(count)
+            Log.d("transactionsCount", "Pemasukan: ${adapter.pemasukan}")
         })
+        mTransactionViewModel.pengeluaranCount.observe(viewLifecycleOwner, Observer { count ->
+            adapter.setPengeluaranCount(count)
+            Log.d("transactionsCount", "Pengeluaran: ${adapter.pengeluaran}")
+        })
+        Log.d("transactionsCount", "Transactions: ${adapter.itemCount}")
 
-        adapter.registerAdapterDataObserver(object : AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
-            }
-        })
+
 
 
     }
@@ -222,11 +235,6 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
                         }
                     }
                     // switch to AddTransactionActivity, while passing the address and the coordinates data
-                    val intent = Intent(activity, AddTransactionActivity::class.java)
-                    intent.putExtra(INTENT_EXTRA_LOCATION, address)
-                    intent.putExtra(INTENT_EXTRA_LATITUDE, currentLatitude)
-                    intent.putExtra(INTENT_EXTRA_LONGITUDE, currentLongitude)
-                    startActivity(intent)
                 }
         } else {
             // Location is not enabled yet --> Transaction activity cannot be activated, redirected to the location settings.
