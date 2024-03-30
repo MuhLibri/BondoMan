@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.google.android.gms.dynamic.SupportFragmentWrapper
-import com.sleepee.bondoman.R
-import com.sleepee.bondoman.databinding.FragmentGraphBinding
 import com.sleepee.bondoman.databinding.FragmentSettingsBinding
 
 class SettingsFragment: Fragment() {
     private lateinit var binding: FragmentSettingsBinding
-    private lateinit var dialog: SaveTransactionDialogFragment
+    private lateinit var saveDialog: SaveTransactionDialogFragment
+    private lateinit var sendDialog: SendTransactionDialogFragment
     private lateinit var simpanButton: Button
+    private lateinit var kirimButton: Button
+    private lateinit var acakButton: Button
+    private lateinit var keluarButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,11 +28,28 @@ class SettingsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog = SaveTransactionDialogFragment()
+        saveDialog = SaveTransactionDialogFragment()
+        sendDialog = SendTransactionDialogFragment()
+
         simpanButton = binding.simpanButton
+        kirimButton = binding.kirimButton
+        acakButton = binding.acakButton
+        keluarButton = binding.keluarButton
 
         simpanButton.setOnClickListener {
-            dialog.show(childFragmentManager, "tes")
+            saveDialog.show(childFragmentManager, "Save")
+        }
+
+        kirimButton.setOnClickListener {
+            sendDialog.show(childFragmentManager, "Send")
+        }
+
+        acakButton.setOnClickListener {
+            // TO DO Implement
+        }
+
+        keluarButton.setOnClickListener{
+            // TO DO Implement
         }
     }
 }
