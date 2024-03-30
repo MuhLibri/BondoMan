@@ -16,9 +16,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -26,8 +26,6 @@ import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.sleepee.bondoman.data.model.Transaction
-import com.sleepee.bondoman.data.model.TransactionDao
-import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.databinding.FragmentTransactionBinding
 import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.EDIT_TRANSACTION_AMOUNT
@@ -47,7 +45,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 
@@ -104,7 +101,7 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
         })
-        mTransactionViewModel.getCount().observe(viewLifecycleOwner, Observer { count ->
+        mTransactionViewModel.dataCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setDataCount(count)
         })
         Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
@@ -150,14 +147,21 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
 
     private fun fetchAllTransactions() {
         val adapter = TransactionsAdapter(listener = this)
+
         mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
         })
-        mTransactionViewModel.getCount().observe(viewLifecycleOwner, Observer { count ->
+        mTransactionViewModel.dataCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setDataCount(count)
         })
-        Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
+
+        adapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                Toast.makeText(requireContext(), "Transactions: ${adapter.itemCount}", Toast.LENGTH_LONG).show()
+            }
+        })
+
 
     }
 

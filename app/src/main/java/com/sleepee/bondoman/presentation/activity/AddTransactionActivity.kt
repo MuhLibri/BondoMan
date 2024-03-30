@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
+import com.sleepee.bondoman.data.util.TransactionUtils
 import com.sleepee.bondoman.databinding.ActivityAddTransactionBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -128,40 +129,15 @@ class AddTransactionActivity: BaseActivity() {
         }
 
 
-        val formattedDate = getCurrentDate()
+        val formattedDate = TransactionUtils.getCurrentDate()
 
-        val transaction = convertToTransaction(title, amount, formattedDate, location)
+        val transaction = TransactionUtils.convertToTransaction(title.text.toString(), amount.text.toString().toInt(), formattedDate, location.text.toString(), selectedItem)
         thread {
             transactionDao.createTransaction(transaction)
         }
         Toast.makeText(this, "Transaction created successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun convertToTransaction(
-        title: EditText,
-        amount: EditText,
-        formattedDate: String?,
-        location: EditText
-    ): Transaction {
-        val transaction = Transaction(
-            title = title.text.toString(),
-            amount = amount.text.toString().toInt(),
-            category = selectedItem,
-            date = formattedDate.toString(),
-            location = location.text.toString(),
-            locationLink = "geo:0,0?q=${URLEncoder.encode(location.text.toString(), "UTF-8")}"
-        )
-        return transaction
-    }
-
-
-    private fun getCurrentDate(): String? {
-        val current = LocalDateTime.now()
-
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        return current.format(formatter)
     }
 
     private fun setupCategoryDropdown() {

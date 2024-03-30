@@ -4,6 +4,7 @@ import com.sleepee.bondoman.data.model.ScanResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -12,5 +13,5 @@ import retrofit2.http.Part
 interface ScanApiService {
     @Multipart
     @POST("api/bill/upload")
-    fun uploadAttachment(@Part filePart: MultipartBody.Part?): Response<ScanResponse>
+    suspend fun uploadAttachment(@Header("Authorization") token: String, @Part filePart: MultipartBody.Part?): Response<ScanResponse>
 }

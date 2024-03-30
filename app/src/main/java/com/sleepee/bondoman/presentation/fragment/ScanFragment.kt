@@ -25,11 +25,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.vision.common.InputImage
 import com.sleepee.bondoman.data.model.LoginRequest
+import com.sleepee.bondoman.data.model.TransactionDao
+import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.data.util.TokenManager
+import com.sleepee.bondoman.data.util.TransactionUtils
 import com.sleepee.bondoman.databinding.FragmentScanBinding
 import com.sleepee.bondoman.network.api.LoginApiService
 import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.network.api.ScanApiService
+import com.sleepee.bondoman.presentation.activity.AddTransactionActivity
 import com.sleepee.bondoman.presentation.activity.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,6 +44,7 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
+import kotlin.concurrent.thread
 
 const val CAMERA_REQUEST_CODE = 100
 const val IMAGE_REQUEST_CODE = 101
@@ -50,7 +55,12 @@ class ScanFragment: Fragment() {
     private var cameraPermissions = listOf<String>()
     private var imagePermissions = listOf<String>()
     private var imageUri : Uri? = null
+    private var token: String = "Bearer ${TokenManager.getToken()}"
     private lateinit var outputFile: File
+    private lateinit var database: TransactionDatabase
+    private val transactionDao: TransactionDao by lazy {
+        database.getTransactionDao()
+    }
     private val scanService : ScanApiService = RetrofitClient.Instance.create(ScanApiService::class.java)
     private var galleryActivityResultLauncher : ActivityResultLauncher<Intent> =
         registerForActivityResult(
@@ -109,6 +119,8 @@ class ScanFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        database = TransactionDatabase.getDatabase(requireContext())
+
         setupPermissions()
         setupUI()
     }
@@ -150,11 +162,6 @@ class ScanFragment: Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Cancelled",
-                    Toast.LENGTH_SHORT
-                ).show()
                 detectResultFromImage()
             }
         }
@@ -180,21 +187,33 @@ class ScanFragment: Fragment() {
         lifecycleScope.launch {
             val res = withContext(Dispatchers.IO) {
                 try {
-                    scanService.uploadAttachment(filePart)
+                    scanService.uploadAttachment(token, filePart)
                 } catch (e: Exception) {
-                    Log.e("LoginActivity", "Login failed: ${e.message}")
+                    Log.e("ScanActivity", "Scan failed: ${e.message}")
                     null
                 }
             }
-
+            Log.d("scanresults", "results: $res")
             if (res != null && res.isSuccessful && res.body() != null){
+
 //                val token = res.body()!!.token
 //                TokenManager.storeToken(token)
 //                Log.d("LoginActivity", "Login success with token $token")
-                val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(mainActivityIntent)
+//                val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
+//                startActivity(mainActivityIntent)
+                val items = res.body()!!.itemsList
+                Log.d("ScanResults", "Scan success with ${items.items[0]}")
+                for (dummyTransaction in items.items) {
+                    val transaction = TransactionUtils.convertToTransaction(dummyTransaction.name, dummyTransaction.price.toInt(), TransactionUtils.getCurrentDate(), "Museum Geologi Bandung", "Pemasukan")
+                    thread {
+                        transactionDao.createTransaction(transaction)
+                    }
+                }
+                Toast.makeText(requireContext(), "Scanned transactions added!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
             } else {
-                Toast.makeText(requireContext(), "Login failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Scan failed", Toast.LENGTH_SHORT).show()
             }
         }
     }
