@@ -37,7 +37,6 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TokenManager.init(applicationContext)
-        TokenManager.clearToken()
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
@@ -67,8 +66,10 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
             showConnDialog()
         }
 
+        Log.d("LoginActivity", "Token stored: ${TokenManager.isTokenStored()}")
+
         if (TokenManager.isTokenStored()) {
-            startMainActivity()
+            startActivity(mainActivityIntent)
             return
         }
     }
@@ -92,11 +93,6 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
             .build()
 
         WorkManager.getInstance(applicationContext).enqueue(workRequest);
-    }
-
-    private fun startMainActivity() {
-        startJWTBackgroundService()
-        startActivity(mainActivityIntent)
     }
 
     private fun login(email : String, password : String) {
@@ -131,7 +127,9 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
                 val token = res.body()!!.token
                 TokenManager.storeToken(token)
                 Log.d("LoginActivity", "Login success with token $token")
-                startMainActivity()
+
+                startJWTBackgroundService()
+                startActivity(mainActivityIntent)
             } else {
                 Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
             }

@@ -3,6 +3,7 @@ package com.sleepee.bondoman.network
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
@@ -17,9 +18,16 @@ import java.util.concurrent.TimeUnit
 
 class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
     private val jwtService : JWTApiService = RetrofitClient.Instance.create(JWTApiService::class.java)
-    private val tokenHeader : String = "Bearer ${TokenManager.getToken()}"
     override suspend fun doWork(): Result {
+        TokenManager.init(applicationContext)
+
+        // For demo purposes only
+//        TokenManager.clearToken()
+//        broadcastTokenExpired()
+//        return Result.success()
+
         val res = withContext(Dispatchers.IO) {
+            val tokenHeader : String = "Bearer ${TokenManager.getToken()}"
             try {
                 jwtService.checkToken(tokenHeader)
             } catch (e: Exception) {
@@ -50,7 +58,11 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
     private fun broadcastTokenExpired() {
         val broadcastIntent = Intent(TokenManager.JWT_EXPIRED)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(broadcastIntent)
+    }
 
+    private fun displayTokenExpiredToast() {
+        Toast.makeText(applicationContext, "Token expired, logging out", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun retryWithoutDelay() {
