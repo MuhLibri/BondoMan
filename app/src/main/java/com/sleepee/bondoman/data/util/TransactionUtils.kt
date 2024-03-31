@@ -62,7 +62,7 @@ object TransactionUtils {
         return current.format(formatter)
     }
 
-    fun saveTransaction(fileName: String, format: String) {
+    fun saveTransaction(fileName: String, format: String, transactions: Array<Transaction>) {
         val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
         val workbook = if (format == ".xls") HSSFWorkbook() else XSSFWorkbook()
         val workSheet = workbook.createSheet()
@@ -109,20 +109,17 @@ object TransactionUtils {
             cell3.cellStyle = headerStyle
             cell4.cellStyle = headerStyle
         }
-        // Dummy
+        // Data
         // -------------------------------------------------------------------------------------
-        val t1 = TransactionModel("27/03/2024", "Pemasukan", 20000, "Kerja", "Jl. Jendral Sudirman No 12, Bandung")
-        val data = arrayOf(t1)
-
         var i = 1
-        for (t in data) {
+        for (transaction in transactions) {
             val row = workSheet.createRow(i)
             i += 1
-            row.createCell(0).setCellValue(t.tanggal)
-            row.createCell(1).setCellValue(t.kategori)
-            row.createCell(2).setCellValue(t.nominal.toString())
-            row.createCell(3).setCellValue(t.judul)
-            row.createCell(4).setCellValue(t.lokasi)
+            row.createCell(0).setCellValue(transaction.date)
+            row.createCell(1).setCellValue(transaction.category)
+            row.createCell(2).setCellValue(transaction.amount.toString())
+            row.createCell(3).setCellValue(transaction.title)
+            row.createCell(4).setCellValue(transaction.location)
         }
         // -------------------------------------------------------------------------------------
 
@@ -131,5 +128,3 @@ object TransactionUtils {
         workbook.close()
     }
 }
-
-class TransactionModel(val tanggal: String, val kategori: String, val nominal: Int, val judul: String, val lokasi: String)
