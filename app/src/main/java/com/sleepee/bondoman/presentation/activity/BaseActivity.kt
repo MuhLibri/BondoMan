@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -40,12 +41,20 @@ abstract class BaseActivity :
     private val connectivityChangeReceiver = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: android.net.Network) {
             super.onAvailable(network)
+            if (NetworkUtils.appConnected && toOfflineDialog.isAdded)
+                toOfflineDialog.dismiss()
+                Toast.makeText(applicationContext, "Back online", Toast.LENGTH_SHORT).show()
+
             if (!NetworkUtils.appConnected && !toOnlineDialog.isAdded)
                 toOnlineDialog.show(supportFragmentManager, "toOnlineDialog")
         }
 
         override fun onLost(network: android.net.Network) {
             super.onLost(network)
+            if (!NetworkUtils.appConnected && toOnlineDialog.isAdded)
+                toOnlineDialog.dismiss()
+                Toast.makeText(applicationContext, "Lost connection", Toast.LENGTH_SHORT).show()
+
             if (NetworkUtils.appConnected && !toOfflineDialog.isAdded)
                 toOfflineDialog.show(supportFragmentManager, "toOfflineDialog")
         }
