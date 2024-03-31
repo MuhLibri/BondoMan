@@ -30,7 +30,9 @@ import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.data.util.TransactionUtils
+import com.sleepee.bondoman.databinding.FragmentOfflineBinding
 import com.sleepee.bondoman.databinding.FragmentScanBinding
+import com.sleepee.bondoman.network.NetworkUtils
 import com.sleepee.bondoman.network.api.LoginApiService
 import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.network.api.ScanApiService
@@ -115,6 +117,9 @@ class ScanFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentScanBinding.inflate(inflater, container, false)
+        if (!NetworkUtils.appConnected) {
+            return FragmentOfflineBinding.inflate(inflater, container, false).root
+        }
         return binding.root
     }
 
