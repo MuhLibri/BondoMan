@@ -30,6 +30,7 @@ object TokenManager {
     }
 
     fun clearToken() {
+        if (!isTokenStored()) return
         with (sharedPref.edit()) {
             remove(KEY_TOKEN)
             apply()

@@ -12,7 +12,7 @@ class ToOnlineDialogFragment : DialogFragment() {
     private lateinit var listener: ToOnlineDialogListener
 
     interface ToOnlineDialogListener {
-        fun onOkClick(dialog: DialogFragment)
+        fun onToOnlineClick(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
@@ -34,7 +34,7 @@ class ToOnlineDialogFragment : DialogFragment() {
 
             val tryAgainBtn = dialogView.findViewById<Button>(R.id.okBtn)
             tryAgainBtn.setOnClickListener {
-                listener.onOkClick(this)
+                listener.onToOnlineClick(this)
             }
 
             dialog.setView(dialogView)

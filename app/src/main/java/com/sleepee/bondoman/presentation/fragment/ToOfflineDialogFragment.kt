@@ -12,7 +12,7 @@ class ToOfflineDialogFragment : DialogFragment() {
     private lateinit var listener: ToOfflineDialogListener
 
     interface ToOfflineDialogListener {
-        fun onOkClick(dialog: DialogFragment)
+        fun onToOfflineClick(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
@@ -34,7 +34,7 @@ class ToOfflineDialogFragment : DialogFragment() {
 
             val tryAgainBtn = dialogView.findViewById<Button>(R.id.okBtn)
             tryAgainBtn.setOnClickListener {
-                listener.onOkClick(this)
+                listener.onToOfflineClick(this)
             }
 
             dialog.setView(dialogView)

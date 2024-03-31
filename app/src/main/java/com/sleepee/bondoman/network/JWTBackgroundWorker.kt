@@ -3,7 +3,6 @@ package com.sleepee.bondoman.network
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
@@ -50,7 +49,7 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
             }
             Result.success()
         } else {
-            retryWithoutDelay()
+            handleTokenException()
             Result.success()
         }
     }
@@ -60,11 +59,14 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(broadcastIntent)
     }
 
-    private fun retryWithoutDelay() {
-        val nextWorkRequest = OneTimeWorkRequestBuilder<JWTBackgroundWorker>()
-            .build()
-
-        WorkManager.getInstance(applicationContext).enqueue(nextWorkRequest)
+    private fun handleTokenException() {
+        if (NetworkUtils.isConnected(applicationContext)) {
+            val nextWorkRequest = OneTimeWorkRequestBuilder<JWTBackgroundWorker>()
+                .build()
+            WorkManager.getInstance(applicationContext).enqueue(nextWorkRequest)
+        } else {
+            TokenManager.clearToken()
+        }
     }
 
 

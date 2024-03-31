@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
     private lateinit var binding: ActivityLoginBinding
     private val loginService : LoginApiService = RetrofitClient.Instance.create(LoginApiService::class.java)
     private lateinit var mainActivityIntent : Intent
-    private val connDialog = NoConnectivityDialogFragment()
+    private lateinit var connDialog : NoConnectivityDialogFragment
     private lateinit var workManager : WorkManager
 
     @SuppressLint("SetTextI18n") // delete this later
@@ -61,6 +61,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
             login(email, password)
         }
 
+        connDialog = NoConnectivityDialogFragment()
         val isNetworkConnected = NetworkUtils.isConnected(this)
         if (!isNetworkConnected) {
             showConnDialog()
@@ -69,6 +70,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
         Log.d("LoginActivity", "Token stored: ${TokenManager.isTokenStored()}")
 
         if (TokenManager.isTokenStored()) {
+            NetworkUtils.appConnected = true
             startActivity(mainActivityIntent)
             return
         }
@@ -83,6 +85,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
     }
     override fun onAccessAppOfflineClick(dialog: DialogFragment) {
         dialog.dismiss()
+        NetworkUtils.appConnected = false
         startActivity(mainActivityIntent)
     }
 
@@ -129,6 +132,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
                 Log.d("LoginActivity", "Login success with token $token")
 
                 startJWTBackgroundService()
+                NetworkUtils.appConnected = true
                 startActivity(mainActivityIntent)
             } else {
                 Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()

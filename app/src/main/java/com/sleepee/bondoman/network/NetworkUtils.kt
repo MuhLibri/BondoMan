@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 
 object NetworkUtils {
+    var appConnected = true
     fun isConnected(context: Context): Boolean {
         val connMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connMgr.activeNetwork ?: return false
