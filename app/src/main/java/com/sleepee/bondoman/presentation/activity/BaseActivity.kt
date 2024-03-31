@@ -10,8 +10,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.sleepee.bondoman.data.util.TokenManager
+import com.sleepee.bondoman.presentation.fragment.ToOnlineDialogFragment
 
 abstract class BaseActivity : AppCompatActivity() {
+    private val toOnlineDialog = ToOnlineDialogFragment()
+
     private val jwtExpirationReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == TokenManager.JWT_EXPIRED) {

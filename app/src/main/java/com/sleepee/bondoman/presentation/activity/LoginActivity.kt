@@ -20,17 +20,17 @@ import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
 import com.sleepee.bondoman.network.JWTBackgroundWorker
 import com.sleepee.bondoman.network.NetworkUtils
-import com.sleepee.bondoman.presentation.fragment.ConnectivityDialogFragment
+import com.sleepee.bondoman.presentation.fragment.NoConnectivityDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.ConnectivityDialogListener {
+class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.ConnectivityDialogListener {
     private lateinit var binding: ActivityLoginBinding
     private val loginService : LoginApiService = RetrofitClient.Instance.create(LoginApiService::class.java)
     private lateinit var mainActivityIntent : Intent
-    private val connDialog = ConnectivityDialogFragment()
+    private val connDialog = NoConnectivityDialogFragment()
     private lateinit var workManager : WorkManager
 
     @SuppressLint("SetTextI18n") // delete this later

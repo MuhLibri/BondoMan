@@ -8,7 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.sleepee.bondoman.R
 
-class ConnectivityDialogFragment : DialogFragment() {
+class NoConnectivityDialogFragment : DialogFragment() {
     private lateinit var listener: ConnectivityDialogListener
 
     interface ConnectivityDialogListener {
@@ -29,7 +29,7 @@ class ConnectivityDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val inflater = it.layoutInflater
-            val dialogView = inflater.inflate(R.layout.fragment_connectivity_dialog, null)
+            val dialogView = inflater.inflate(R.layout.fragment_no_connection, null)
 
             val dialog = AlertDialog.Builder(it).create()
 
