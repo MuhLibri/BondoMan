@@ -33,4 +33,9 @@ abstract class BaseActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(applicationContext)
             .unregisterReceiver(jwtExpirationReceiver)
     }
+
+    fun stopJwtWorker() {
+
+    }
+
 }

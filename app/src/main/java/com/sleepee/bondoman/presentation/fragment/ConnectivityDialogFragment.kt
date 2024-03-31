@@ -13,7 +13,7 @@ class ConnectivityDialogFragment : DialogFragment() {
 
     interface ConnectivityDialogListener {
         fun onTryConnectivityAgainClick(dialog: DialogFragment)
-        fun onAccessAppOfflineClinck(dialog: DialogFragment)
+        fun onAccessAppOfflineClick(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
@@ -40,7 +40,7 @@ class ConnectivityDialogFragment : DialogFragment() {
 
             val accessOfflineBtn = dialogView.findViewById<Button>(R.id.accessOfflineBtn)
             accessOfflineBtn.setOnClickListener {
-                listener.onAccessAppOfflineClinck(this)
+                listener.onAccessAppOfflineClick(this)
             }
 
             dialog.setView(dialogView)

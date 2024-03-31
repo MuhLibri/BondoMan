@@ -11,16 +11,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sleepee.bondoman.data.model.LoginRequest
 import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.network.api.LoginApiService
 import com.sleepee.bondoman.network.api.RetrofitClient
 import com.sleepee.bondoman.databinding.ActivityLoginBinding
-import com.sleepee.bondoman.network.JWTBackgroundService
+import com.sleepee.bondoman.network.JWTBackgroundWorker
 import com.sleepee.bondoman.network.NetworkUtils
 import com.sleepee.bondoman.presentation.fragment.ConnectivityDialogFragment
 import kotlinx.coroutines.Dispatchers
@@ -82,15 +80,18 @@ class LoginActivity : AppCompatActivity(), ConnectivityDialogFragment.Connectivi
     override fun onTryConnectivityAgainClick(dialog: DialogFragment) {
         dialog.dismiss()
     }
-    override fun onAccessAppOfflineClinck(dialog: DialogFragment) {
+    override fun onAccessAppOfflineClick(dialog: DialogFragment) {
         dialog.dismiss()
         startActivity(mainActivityIntent)
     }
 
     private fun startJWTBackgroundService() {
-        val request = OneTimeWorkRequestBuilder<JWTBackgroundService>().build()
-        workManager.enqueue(request)
         Log.d("LoginActivity", "JWTBackgroundService started")
+        val workRequest = OneTimeWorkRequestBuilder<JWTBackgroundWorker>()
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(applicationContext).enqueue(workRequest);
     }
 
     private fun startMainActivity() {
