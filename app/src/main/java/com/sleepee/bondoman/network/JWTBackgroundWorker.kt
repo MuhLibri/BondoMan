@@ -47,6 +47,7 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
                 TokenManager.clearToken()
 
                 broadcastTokenExpired()
+                displayTokenExpiredToast()
             }
             Result.success()
         } else {
