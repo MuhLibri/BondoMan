@@ -35,6 +35,26 @@ object TransactionUtils {
         return transaction
     }
 
+    fun convertToTransactionUsingId(
+        id: Int,
+        title: String,
+        amount: Int,
+        location: String,
+        category: String,
+        date: String,
+    ): Transaction {
+        val transaction = Transaction(
+            transactionId = id,
+            title = title,
+            amount = amount,
+            category = category,
+            date = date,
+            location = location,
+            locationLink = "geo:0,0?q=${URLEncoder.encode(location, "UTF-8")}"
+        )
+        return transaction
+    }
+
     fun getCurrentDate(): String? {
         val current = LocalDateTime.now()
 

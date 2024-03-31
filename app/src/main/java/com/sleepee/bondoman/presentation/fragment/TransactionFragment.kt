@@ -149,10 +149,24 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPemasukanCount(count)
             Log.d("transactionsCount", "Pemasukan: ${adapter.pemasukan}")
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putInt("pemasukan", adapter.pemasukan)
+            myEdit.apply()
+
+            Log.d("address", "address: $address")
         })
         mTransactionViewModel.pengeluaranCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPengeluaranCount(count)
             Log.d("transactionsCount", "Pengeluaran: ${adapter.pengeluaran}")
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putInt("pengeluaran", adapter.pengeluaran)
+            myEdit.apply()
         })
         requireActivity().runOnUiThread {
 
@@ -204,10 +218,24 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPemasukanCount(count)
             Log.d("transactionsCount", "Pemasukan: ${adapter.pemasukan}")
+
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putInt("pemasukan", adapter.pemasukan)
+            myEdit.apply()
         })
         mTransactionViewModel.pengeluaranCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPengeluaranCount(count)
             Log.d("transactionsCount", "Pengeluaran: ${adapter.pengeluaran}")
+
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putInt("pengeluaran", adapter.pengeluaran)
+            myEdit.apply()
         })
         Log.d("transactionsCount", "Transactions: ${adapter.itemCount}")
 

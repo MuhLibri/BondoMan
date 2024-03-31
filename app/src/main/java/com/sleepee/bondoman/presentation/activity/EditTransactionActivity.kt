@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
+import com.sleepee.bondoman.data.util.TransactionUtils
 import com.sleepee.bondoman.databinding.ActivityEditTransactionBinding
 import java.net.URLEncoder
 import kotlin.concurrent.thread
@@ -65,10 +66,10 @@ class EditTransactionActivity : BaseActivity() {
     }
 
     private fun deleteTransaction() {
-        val transaction = convertToTransaction(id,
-            binding.titleEditText,
-            binding.amountEditText,
-            binding.locationEditText,
+        val transaction = TransactionUtils.convertToTransactionUsingId(id,
+            binding.titleEditText.text.toString(),
+            binding.amountEditText.text.toString().toInt(),
+            binding.locationEditText.text.toString(),
             category,
             date)
         thread {
@@ -109,7 +110,7 @@ class EditTransactionActivity : BaseActivity() {
         }
 
 
-        val transaction = convertToTransaction(id, title, amount, location, category, date)
+        val transaction = TransactionUtils.convertToTransactionUsingId(id, title.text.toString(), amount.text.toString().toInt(), location.text.toString(), category, date)
 
         thread {
             transactionDao.updateTransaction(transaction = transaction)
@@ -117,26 +118,6 @@ class EditTransactionActivity : BaseActivity() {
         Toast.makeText(this, "Transaction edited successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun convertToTransaction(
-        id: Int,
-        title: EditText,
-        amount: EditText,
-        location: EditText,
-        category: String,
-        date: String,
-    ): Transaction {
-        val transaction = Transaction(
-            transactionId = id,
-            title = title.text.toString(),
-            amount = amount.text.toString().toInt(),
-            category = category,
-            date = date,
-            location = location.text.toString(),
-            locationLink = "geo:0,0?q=${URLEncoder.encode(location.text.toString(), "UTF-8")}"
-        )
-        return transaction
     }
 
     @SuppressLint("SetTextI18n")
