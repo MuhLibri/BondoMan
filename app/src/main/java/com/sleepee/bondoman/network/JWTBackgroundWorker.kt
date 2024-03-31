@@ -47,7 +47,6 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
                 TokenManager.clearToken()
 
                 broadcastTokenExpired()
-                displayTokenExpiredToast()
             }
             Result.success()
         } else {
@@ -59,11 +58,6 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
     private fun broadcastTokenExpired() {
         val broadcastIntent = Intent(TokenManager.JWT_EXPIRED)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(broadcastIntent)
-    }
-
-    private fun displayTokenExpiredToast() {
-        Toast.makeText(applicationContext, "Token expired, logging out", Toast.LENGTH_SHORT)
-            .show()
     }
 
     private fun retryWithoutDelay() {
