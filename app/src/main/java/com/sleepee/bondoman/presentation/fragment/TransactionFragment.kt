@@ -30,6 +30,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.google.gson.Gson
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.data.model.Transaction
 import com.sleepee.bondoman.data.model.TransactionDao
@@ -145,6 +146,16 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
+
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            val gson = Gson()
+            val json = gson.toJson(adapter.transactions)
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putString("transactions", json)
+            myEdit.apply()
         })
         mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPemasukanCount(count)
@@ -214,6 +225,16 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
         mTransactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         mTransactionViewModel.readAllData.observe(viewLifecycleOwner, Observer { transaction ->
             adapter.setData(transaction)
+
+            val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+
+            val gson = Gson()
+            val json = gson.toJson(adapter.transactions)
+
+            // write all the data entered by the user in SharedPreference and apply
+            myEdit.putString("transactions", json)
+            myEdit.apply()
         })
         mTransactionViewModel.pemasukanCount.observe(viewLifecycleOwner, Observer { count ->
             adapter.setPemasukanCount(count)

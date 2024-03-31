@@ -20,7 +20,7 @@ import com.sleepee.bondoman.presentation.fragment.TransactionFragment
 class TransactionsAdapter(private val listener: LocationButtonListener): RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
-    private var transactions = emptyList<Transaction>()
+    var transactions = emptyList<Transaction>()
     var pemasukan: Int = 0
     var pengeluaran: Int = 0
 

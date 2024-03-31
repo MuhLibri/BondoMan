@@ -124,7 +124,7 @@ class ScanFragment: Fragment() {
         database = TransactionDatabase.getDatabase(requireContext())
 
         val sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        location = sh.getString("location", "").toString()
+        location = sh.getString("location", "").toString()z
 
         setupPermissions()
         setupUI()
