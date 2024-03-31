@@ -1,5 +1,6 @@
 package com.sleepee.bondoman.presentation.fragment
 
+import android.content.Context.MODE_PRIVATE
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.databinding.FragmentGraphBinding
+import com.sleepee.bondoman.presentation.adapter.TransactionsAdapter
 
 class GraphFragment: Fragment() {
     private lateinit var binding: FragmentGraphBinding
@@ -37,7 +39,7 @@ class GraphFragment: Fragment() {
         // Set user percent value
         pieChart.setUsePercentValues(true)
         // Set description as enabled
-        pieChart.getDescription().setEnabled(false)
+        pieChart.description.isEnabled = false
         // Set offset for pie chart
         pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
 
@@ -45,14 +47,14 @@ class GraphFragment: Fragment() {
         pieChart.setDragDecelerationFrictionCoef(0.95f)
 
         // Disable hole
-        pieChart.setDrawHoleEnabled(false)
+        pieChart.isDrawHoleEnabled = false
 
         // Set rotation for pie chart
         pieChart.setRotationAngle(0f)
 
         // Enable rotation of pieChart by touch
-        pieChart.setRotationEnabled(true)
-        pieChart.setHighlightPerTapEnabled(true)
+        pieChart.isRotationEnabled = true
+        pieChart.isHighlightPerTapEnabled = true
 
         // Sett animation for pie chart
         pieChart.animateY(1400, Easing.EaseInOutQuad)
@@ -62,15 +64,19 @@ class GraphFragment: Fragment() {
         pieChart.setEntryLabelColor(Color.WHITE)
         pieChart.setEntryLabelTextSize(12f)
 
-        // Dummy data
-        val entries: ArrayList<PieEntry> = ArrayList()
-        entries.add(PieEntry(70f))
-        entries.add(PieEntry(30f))
+        // Data
+        val sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val pemasukan = sh.getInt("pemasukan", 0)
+        val pengeluaran = sh.getInt("pengeluaran", 0)
 
-        // Sett pie data set
+        val entries: ArrayList<PieEntry> = ArrayList()
+        entries.add(PieEntry(pemasukan.toFloat()))
+        entries.add(PieEntry(pengeluaran.toFloat()))
+
+        // Set pie data set
         val dataSet = PieDataSet(entries, "Mobile OS")
 
-        // Set icons.
+        // Set icons
         dataSet.setDrawIcons(false)
 
         // Setting slice for pie
@@ -83,10 +89,10 @@ class GraphFragment: Fragment() {
         colors.add(resources.getColor(R.color.green))
         colors.add(resources.getColor(R.color.red))
 
-        // Sett colors.
+        // Set colors
         dataSet.colors = colors
 
-        // Sett pie data set
+        // Set pie data set
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextSize(15f)
