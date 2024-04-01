@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.databinding.FragmentSettingsBinding
 import kotlin.random.Random
 
@@ -71,8 +72,8 @@ class SettingsFragment: Fragment() {
         }
 
         keluarButton.setOnClickListener{
-            // TO DO Implement
-
+            TokenManager.clearToken(requireContext())
+            requireActivity().finish()
         }
     }
 }

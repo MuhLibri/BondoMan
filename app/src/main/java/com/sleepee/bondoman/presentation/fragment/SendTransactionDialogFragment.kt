@@ -30,7 +30,7 @@ import java.io.FileOutputStream
 
 
 class SendTransactionDialogFragment : DialogFragment() {
-    private val email = context?.let { CredentialManager.getEmail(it) }
+    private lateinit var email : String
     private val fileName = "Attachment"
     private var format = ".xlsx"
     private val sendVal = 215
@@ -71,6 +71,8 @@ class SendTransactionDialogFragment : DialogFragment() {
         val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
         val author = context?.packageName
         val uri = context?.let { FileProvider.getUriForFile(it, "$author.provider", file) }
+        email = CredentialManager.getEmail(requireContext()).toString()
+
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "*/*"
