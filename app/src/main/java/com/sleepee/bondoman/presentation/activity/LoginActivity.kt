@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.sleepee.bondoman.data.model.LoginRequest
+import com.sleepee.bondoman.data.util.CredentialManager
 import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.network.api.LoginApiService
 import com.sleepee.bondoman.network.api.RetrofitClient
@@ -128,7 +129,8 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
 
             if (res != null && res.isSuccessful && res.body() != null){
                 val token = res.body()!!.token
-                NetworkUtils.encrypt(token)?.let { TokenManager.storeToken(it) }
+                TokenManager.storeToken(token)
+                CredentialManager.storeEmail(applicationContext, email)
                 Log.d("LoginActivity", "Login success with token $token")
 
                 startJWTBackgroundService()
