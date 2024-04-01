@@ -22,6 +22,10 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 - Apache POI (XLS/XLSX)
 - https://github.com/PhilJay/MPAndroidChart (Graf)
 
+## OWASP
+- M4 (**Insufficient Input/Output Validation**): Input pengguna pada aplikasi mobile dapat menyebabkan berbagai vulnerabilitas keamanan yang berbahaya, baik bagi stabilitas aplikasi, maupun data pengguna. Aplikasi ini memiliki input pengguna saat menambahkan/mengedit transaksi, dan hal ini dapat menjadi berbahaya saat dieksploitasi melalui hal-hal seperti cross-site scripting (XSS). XSS adalah eksploitasi keamanan di mana penyerang menempatkan malicious client-end code ke laman web. Misalnya, penyerang memasukkan ```<p><a href='http://example.com/' onclick='stealCookies()'>Link</a></p>``` pada input transaksi, hal ini akan mengambil cookie dari pengguna yang sedang login. Untuk mencegahnya, kami menggunakan Jsoup untuk mensanitasi input pengguna memakai Safelist dari library tersebut, sehingga hasil inputnya menjadi ```<p><a href="http://example.com/" rel="nofollow">Link</a></p>```.
+- M9 (**Insecure Data Storage**): Penyimpanan data seperti token pengguna dapat berbahaya bagi pelaku kejahatan yang dapat mengambil data berharga tanpa otorisasi. Token pengguna yang disimpan di SharedPreferences dapat dicuri jika tidak diamankan dengan baik. Oleh karena itu, kami menggunakan enkripsi/dekripsi token. Saat token diinisialisasi melalui login, token dienkripsi menggunakan Advanced Encryption Standard (AES). Token diiterasi sebanyak 10000 kali menggunakan kunci base64, salt, dan Initialization Vector (IV). Token yang sudah dienkripsi disimpan dalam SharedPreferences. Jika token ingin diambil untuk kegunaan aplikasi, token didekripsi dengan kunci, salt, dan IV yang sama.
+
 ## Screenshot Aplikasi
 
 ## Pembagian Kerja Kelompok
