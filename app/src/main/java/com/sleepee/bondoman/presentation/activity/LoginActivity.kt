@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
 
             if (res != null && res.isSuccessful && res.body() != null){
                 val token = res.body()!!.token
-                TokenManager.storeToken(token)
+                NetworkUtils.encrypt(token)?.let { TokenManager.storeToken(it) }
                 CredentialManager.storeEmail(applicationContext, email)
                 Log.d("LoginActivity", "Login success with token $token")
 
