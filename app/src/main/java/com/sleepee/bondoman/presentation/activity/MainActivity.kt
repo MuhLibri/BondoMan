@@ -29,6 +29,8 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
             add(R.id.frame_content, TransactionFragment())
         }
 
+        title = "Transaction"
+
         when (intent?.extras?.getString("twibbon-load")) {
             "twibbon-fragment" -> {
                 binding.bottomNav.selectedItemId = R.id.nav_twibbon
@@ -55,30 +57,35 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, TransactionFragment())
                 }
+                title = "Transaction"
                 true
             }
             R.id.nav_scan -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, ScanFragment())
                 }
+                title = "Scan"
                 true
             }
             R.id.nav_graph -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, GraphFragment())
                 }
+                title = "Graph"
                 true
             }
             R.id.nav_settings -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, SettingsFragment())
                 }
+                title = "Settings"
                 true
             }
             R.id.nav_twibbon -> {
                 supportFragmentManager.commit {
                     replace(R.id.frame_content, TwibbonFragment())
                 }
+                title = "Twibbon"
                 true
             }
             else -> {
