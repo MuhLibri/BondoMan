@@ -210,7 +210,9 @@ class ScanFragment: Fragment() {
                 val items = res.body()!!.itemsList
                 Log.d("ScanResults", "Scan success with ${items.items[0]}")
                 for (dummyTransaction in items.items) {
-                    val transaction = TransactionUtils.convertToTransaction(dummyTransaction.name, dummyTransaction.price.toInt(), TransactionUtils.getCurrentDate(), location, "Pemasukan")
+                    val randomNumber = (0..1).random()
+                    val category = arrayOf("Pemasukan", "Pengeluaran")[randomNumber]
+                    val transaction = TransactionUtils.convertToTransaction(dummyTransaction.name, dummyTransaction.price.toInt(), TransactionUtils.getCurrentDate(), location, category)
                     thread {
                         transactionDao.createTransaction(transaction)
                     }
