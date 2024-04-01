@@ -23,6 +23,8 @@ class RetakeTwibbonActivity: BaseActivity() {
 
         val arrayOfBytes = intent.getByteArrayExtra("TwibbonPhoto")
 
+        title = "Twibbon Result"
+
         if (arrayOfBytes != null) {
             image = BitmapFactory.decodeByteArray(arrayOfBytes, 0, arrayOfBytes.size)
         }

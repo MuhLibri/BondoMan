@@ -1,10 +1,12 @@
 package com.sleepee.bondoman.presentation.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sleepee.bondoman.databinding.FragmentSettingsBinding
 
@@ -45,7 +47,12 @@ class SettingsFragment: Fragment() {
         }
 
         acakButton.setOnClickListener {
-            // TO DO Implement
+            Intent().also { intent ->
+                intent.setAction("com.sleepee.bondoman.addTransaction")
+                intent.putExtra("title", "Beli Geprek")
+                context?.sendBroadcast(intent)
+            }
+            Toast.makeText(requireContext(), "Randomized transaction has been broadcasted", Toast.LENGTH_SHORT).show()
         }
 
         keluarButton.setOnClickListener{

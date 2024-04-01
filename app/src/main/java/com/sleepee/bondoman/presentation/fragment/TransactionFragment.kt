@@ -312,11 +312,11 @@ class TransactionFragment : Fragment(), TransactionsAdapter.LocationButtonListen
                     val location: Location? = task.result
                     // do reverse geocoding using geocoder based on the latitude + longitude from FusedLocationProviderClient
                     if (location != null) {
-                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        val geocoder = context?.let { Geocoder(it, Locale.getDefault()) }
                         currentLatitude = location.latitude
                         currentLongitude = location.longitude
                         val addresses =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                            geocoder?.getFromLocation(location.latitude, location.longitude, 1)
                         if (addresses != null) {
                             address = addresses[0].getAddressLine(0)
                         }
