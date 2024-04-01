@@ -37,7 +37,6 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
     @SuppressLint("SetTextI18n") // delete this later
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TokenManager.init(applicationContext)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
@@ -68,9 +67,9 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
             showConnDialog()
         }
 
-        Log.d("LoginActivity", "Token stored: ${TokenManager.isTokenStored()}")
+        Log.d("LoginActivity", "Token stored: ${TokenManager.isTokenStored(applicationContext)}")
 
-        if (TokenManager.isTokenStored()) {
+        if (TokenManager.isTokenStored(applicationContext)) {
             NetworkUtils.appConnected = true
             startActivity(mainActivityIntent)
             return
@@ -129,7 +128,7 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
 
             if (res != null && res.isSuccessful && res.body() != null){
                 val token = res.body()!!.token
-                NetworkUtils.encrypt(token)?.let { TokenManager.storeToken(it) }
+                NetworkUtils.encrypt(token)?.let { TokenManager.storeToken(applicationContext, it) }
                 CredentialManager.storeEmail(applicationContext, email)
                 Log.d("LoginActivity", "Login success with token $token")
 

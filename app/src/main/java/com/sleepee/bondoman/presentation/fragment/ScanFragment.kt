@@ -131,7 +131,7 @@ class ScanFragment: Fragment() {
         val sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         location = sh.getString("location", "").toString()
 
-        token = "Bearer ${TokenManager.getToken()}"
+        token = "Bearer ${TokenManager.getToken(requireContext())}"
 
         setupPermissions()
         setupUI()

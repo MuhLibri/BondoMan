@@ -18,15 +18,8 @@ import java.util.concurrent.TimeUnit
 class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
     private val jwtService : JWTApiService = RetrofitClient.Instance.create(JWTApiService::class.java)
     override suspend fun doWork(): Result {
-        TokenManager.init(applicationContext)
-
-        // For demo purposes only
-//        TokenManager.clearToken()
-//        broadcastTokenExpired()
-//        return Result.success()
-
         val res = withContext(Dispatchers.IO) {
-            val tokenHeader : String = "Bearer ${TokenManager.getToken()}"
+            val tokenHeader : String = "Bearer ${TokenManager.getToken(applicationContext)}"
             try {
                 jwtService.checkToken(tokenHeader)
             } catch (e: Exception) {
@@ -43,7 +36,7 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
                 enqueueNextWorker()
             } else {
                 Log.d("JWTBackgroundWorker", "Token is invalid, logging out")
-                TokenManager.clearToken()
+                TokenManager.clearToken(applicationContext)
 
                 broadcastTokenExpired()
             }
@@ -65,7 +58,7 @@ class JWTBackgroundWorker(appContext: Context, workerParams: WorkerParameters) :
                 .build()
             WorkManager.getInstance(applicationContext).enqueue(nextWorkRequest)
         } else {
-            TokenManager.clearToken()
+            TokenManager.clearToken(applicationContext)
         }
     }
 

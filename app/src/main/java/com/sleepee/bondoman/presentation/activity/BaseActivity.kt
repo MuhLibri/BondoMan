@@ -78,7 +78,6 @@ abstract class BaseActivity :
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        TokenManager.init(applicationContext)
 
         LocalBroadcastManager.getInstance(applicationContext)
             .registerReceiver(jwtExpirationReceiver, IntentFilter(TokenManager.JWT_EXPIRED))

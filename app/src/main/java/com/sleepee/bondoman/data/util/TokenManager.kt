@@ -11,27 +11,27 @@ object TokenManager {
     const val JWT_EXPIRED = "com.sleepee.bondoman.JWT_EXPIRED"
     private const val KEY_TOKEN = "token"
 
-    fun init(context: Context) {
+    fun isTokenStored(context: Context) : Boolean {
         sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    }
-
-    fun isTokenStored() : Boolean {
         return sharedPref.contains(KEY_TOKEN)
     }
 
-    fun storeToken(token: String) {
+    fun storeToken(context: Context, token: String) {
+        sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         with (sharedPref.edit()) {
             putString(KEY_TOKEN, token)
             apply()
         }
     }
 
-    fun getToken() : String? {
+    fun getToken(context: Context) : String? {
+        sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPref.getString(KEY_TOKEN, null)?.let { NetworkUtils.decrypt(it) }
     }
 
-    fun clearToken() {
-        if (!isTokenStored()) return
+    fun clearToken(context: Context) {
+        sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        if (!isTokenStored(context)) return
         with (sharedPref.edit()) {
             remove(KEY_TOKEN)
             apply()

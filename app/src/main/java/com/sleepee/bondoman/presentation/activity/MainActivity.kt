@@ -42,8 +42,6 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
             add(R.id.frame_content, TransactionFragment())
         }
 
-        TokenManager.init(this)
-
         title = "Transaction"
 
         when (intent?.extras?.getString("twibbon-load")) {
