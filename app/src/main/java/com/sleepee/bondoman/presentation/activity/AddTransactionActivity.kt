@@ -23,6 +23,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.Utf8
+import org.jsoup.Jsoup
+import org.jsoup.safety.Safelist
 import java.net.URLEncoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -131,7 +133,7 @@ class AddTransactionActivity: BaseActivity() {
 
         val formattedDate = TransactionUtils.getCurrentDate()
 
-        val transaction = TransactionUtils.convertToTransaction(title.text.toString(), amount.text.toString().toInt(), formattedDate, location.text.toString(), selectedItem)
+        val transaction = TransactionUtils.convertToTransaction(Jsoup.clean(title.text.toString(), Safelist.basic()), amount.text.toString().toInt(), formattedDate, Jsoup.clean(location.text.toString(), Safelist.basic()), selectedItem)
         thread {
             transactionDao.createTransaction(transaction)
         }

@@ -2,6 +2,7 @@ package com.sleepee.bondoman.data.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.sleepee.bondoman.network.NetworkUtils
 
 object TokenManager {
     private const val PREF_NAME = "com.sleepee.bondoman.prefs"
@@ -26,7 +27,7 @@ object TokenManager {
     }
 
     fun getToken() : String? {
-        return sharedPref.getString(KEY_TOKEN, null)
+        return sharedPref.getString(KEY_TOKEN, null)?.let { NetworkUtils.decrypt(it) }
     }
 
     fun clearToken() {

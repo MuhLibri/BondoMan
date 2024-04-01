@@ -16,6 +16,8 @@ import com.sleepee.bondoman.data.model.TransactionDao
 import com.sleepee.bondoman.data.model.TransactionDatabase
 import com.sleepee.bondoman.data.util.TransactionUtils
 import com.sleepee.bondoman.databinding.ActivityEditTransactionBinding
+import org.jsoup.Jsoup
+import org.jsoup.safety.Safelist
 import java.net.URLEncoder
 import kotlin.concurrent.thread
 
@@ -110,7 +112,7 @@ class EditTransactionActivity : BaseActivity() {
         }
 
 
-        val transaction = TransactionUtils.convertToTransactionUsingId(id, title.text.toString(), amount.text.toString().toInt(), location.text.toString(), category, date)
+        val transaction = TransactionUtils.convertToTransactionUsingId(id, Jsoup.clean(title.text.toString(), Safelist.basic()), amount.text.toString().toInt(), Jsoup.clean(location.text.toString(), Safelist.basic()), category, date)
 
         thread {
             transactionDao.updateTransaction(transaction = transaction)

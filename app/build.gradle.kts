@@ -80,4 +80,7 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+
+    implementation("org.jsoup:jsoup:1.14.3")
+
 }
