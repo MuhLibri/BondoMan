@@ -59,7 +59,7 @@ class ScanFragment: Fragment() {
     private var imagePermissions = listOf<String>()
     private var imageUri : Uri? = null
     private lateinit var location: String
-    private var token: String = "Bearer ${TokenManager.getToken()}"
+    private var token: String = ""
     private lateinit var outputFile: File
     private lateinit var database: TransactionDatabase
     private val transactionDao: TransactionDao by lazy {
@@ -130,6 +130,8 @@ class ScanFragment: Fragment() {
 
         val sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         location = sh.getString("location", "").toString()
+
+        token = "Bearer ${TokenManager.getToken()}"
 
         setupPermissions()
         setupUI()

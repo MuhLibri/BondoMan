@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import com.google.android.material.navigation.NavigationBarView
 import com.sleepee.bondoman.R
+import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.databinding.ActivityMainBinding
 import com.sleepee.bondoman.presentation.fragment.GraphFragment
 import com.sleepee.bondoman.presentation.fragment.ScanFragment
@@ -28,6 +29,8 @@ class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
         supportFragmentManager.commit {
             add(R.id.frame_content, TransactionFragment())
         }
+
+        TokenManager.init(this)
 
         title = "Transaction"
 
