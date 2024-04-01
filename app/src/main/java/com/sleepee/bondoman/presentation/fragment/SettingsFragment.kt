@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sleepee.bondoman.databinding.FragmentSettingsBinding
+import kotlin.random.Random
 
 class SettingsFragment: Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -48,8 +49,22 @@ class SettingsFragment: Fragment() {
 
         acakButton.setOnClickListener {
             Intent().also { intent ->
+
+                val titles = arrayOf("Jalan-Jalan", "Beli Geprek", "Beli Rendang", "Beli Minecraft", "Beli Sayuran", "Donasi", "Honor", "Gajian Cuy", "Jackpot", "Menang Give Away", "Gacor Kang")
+                val tidx = Random.nextInt(titles.size)
+                val pidx = 5
+                val selectedTitle = titles[tidx]
+                val category = if (tidx <= pidx) "Pengeluaran" else "Pemasukan"
+                val amount = Random.nextInt(1000, 100001)
+                val locations = arrayOf("Cisistu", "Sangkuriang", "Dago", "Lembang", "ITB", "Jatinangor")
+                val lidx = Random.nextInt(locations.size)
+                val selectedLocation = locations[lidx]
+
                 intent.setAction("com.sleepee.bondoman.addTransaction")
-                intent.putExtra("title", "Beli Geprek")
+                intent.putExtra("title", selectedTitle)
+                intent.putExtra("amount", amount)
+                intent.putExtra("category", category)
+                intent.putExtra("location", selectedLocation)
                 context?.sendBroadcast(intent)
             }
             Toast.makeText(requireContext(), "Randomized transaction has been broadcasted", Toast.LENGTH_SHORT).show()
@@ -57,6 +72,7 @@ class SettingsFragment: Fragment() {
 
         keluarButton.setOnClickListener{
             // TO DO Implement
+
         }
     }
 }

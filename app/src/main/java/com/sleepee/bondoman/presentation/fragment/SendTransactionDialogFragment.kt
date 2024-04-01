@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
 import com.sleepee.bondoman.R
 import com.sleepee.bondoman.data.model.Transaction
+import com.sleepee.bondoman.data.util.CredentialManager
+import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.data.util.TransactionUtils
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.FillPatternType
@@ -28,7 +30,7 @@ import java.io.FileOutputStream
 
 
 class SendTransactionDialogFragment : DialogFragment() {
-    private val email = "mindscape.02@gmail.com"
+    private val email = context?.let { CredentialManager.getEmail(it) }
     private val fileName = "Attachment"
     private var format = ".xlsx"
     private val sendVal = 215
