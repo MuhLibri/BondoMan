@@ -21,6 +21,7 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 - Google Play Services Maps (Google Map Intent)
 - Apache POI (XLS/XLSX)
 - https://github.com/PhilJay/MPAndroidChart (Graf)
+- Splash Screen API
 
 ## OWASP
 - M4 (**Insufficient Input/Output Validation**): Input pengguna pada aplikasi mobile dapat menyebabkan berbagai vulnerabilitas keamanan yang berbahaya, baik bagi stabilitas aplikasi, maupun data pengguna. Aplikasi ini memiliki input pengguna saat menambahkan/mengedit transaksi, dan hal ini dapat menjadi berbahaya saat dieksploitasi melalui hal-hal seperti cross-site scripting (XSS). XSS adalah eksploitasi keamanan di mana penyerang menempatkan malicious client-end code ke laman web. Misalnya, penyerang memasukkan ```<p><a href='http://example.com/' onclick='stealCookies()'>Link</a></p>``` pada input transaksi, hal ini akan mengambil cookie dari pengguna yang sedang login. Untuk mencegahnya, kami menggunakan Jsoup untuk mensanitasi input pengguna memakai Safelist dari library tersebut, sehingga hasil inputnya menjadi ```<p><a href="http://example.com/" rel="nofollow">Link</a></p>```.

@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sleepee.bondoman.data.util.TokenManager
 import com.sleepee.bondoman.databinding.FragmentSettingsBinding
+import com.sleepee.bondoman.presentation.activity.LoginActivity
+import com.sleepee.bondoman.presentation.activity.MainActivity
 import kotlin.random.Random
 
 class SettingsFragment: Fragment() {
@@ -73,7 +75,8 @@ class SettingsFragment: Fragment() {
 
         keluarButton.setOnClickListener{
             TokenManager.clearToken(requireContext())
-            requireActivity().finish()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }

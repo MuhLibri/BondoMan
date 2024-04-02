@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequestBuilder
@@ -38,6 +39,8 @@ class LoginActivity : AppCompatActivity(), NoConnectivityDialogFragment.Connecti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Thread.sleep(2000)
+        installSplashScreen()
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         mainActivityIntent = Intent(this, MainActivity::class.java)
