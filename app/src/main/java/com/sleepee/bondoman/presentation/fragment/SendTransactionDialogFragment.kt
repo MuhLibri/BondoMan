@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Button
@@ -32,7 +33,6 @@ import java.io.FileOutputStream
 class SendTransactionDialogFragment : DialogFragment() {
     private lateinit var email : String
     private val fileName = "Attachment"
-    private var format = ".xlsx"
     private val sendVal = 215
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -44,7 +44,7 @@ class SendTransactionDialogFragment : DialogFragment() {
 
         sendButton.setOnClickListener {
             val selectedOption = radioGroup.checkedRadioButtonId
-            format = dialogView.findViewById<RadioButton>(selectedOption).text.toString()
+            val format = dialogView.findViewById<RadioButton>(selectedOption).text.toString()
 
             val sh = requireActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
             val transactions = sh.getString("transactions", "").toString()
@@ -52,8 +52,8 @@ class SendTransactionDialogFragment : DialogFragment() {
             val transactionArray = gson.fromJson(transactions, Array<Transaction>::class.java)
 
             try {
-                TransactionUtils.saveTransaction(fileName, format, transactionArray)
-                this.sendEmail()
+                this.makeAttachment(format, transactionArray)
+                this.sendEmail(format)
             }  catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "Failed to send email", Toast.LENGTH_SHORT).show()
@@ -65,10 +65,78 @@ class SendTransactionDialogFragment : DialogFragment() {
             .create()
     }
 
-    private fun sendEmail() {
+    private fun makeAttachment(format: String, transactions: Array<Transaction>) {
+        val cacheDir = context?.cacheDir
+        val file = File(cacheDir, fileName + format)
+        val workbook = if (format == ".xls") HSSFWorkbook() else XSSFWorkbook()
+        val workSheet = workbook.createSheet()
+
+        // Header
+        val row0 = workSheet.createRow(0)
+        // Col 0
+        val cell0 = row0.createCell(0)
+        cell0.setCellValue("Date")
+        workSheet.setColumnWidth(0, (cell0.stringCellValue.length + 10) * 256)
+        // Col 1
+        val cell1 = row0.createCell(1)
+        cell1.setCellValue("Category")
+        workSheet.setColumnWidth(1, (cell1.stringCellValue.length + 5) * 256)
+        // Col 2
+        val cell2 = row0.createCell(2)
+        cell2.setCellValue("Amount")
+        workSheet.setColumnWidth(2, (cell2.stringCellValue.length + 10) * 256)
+        // Col 3
+        val cell3 = row0.createCell(3)
+        cell3.setCellValue("Title")
+        workSheet.setColumnWidth(3, (cell3.stringCellValue.length + 15) * 256)
+        // Col 4
+        val cell4 = row0.createCell(4)
+        cell4.setCellValue("Location")
+        workSheet.setColumnWidth(4, (cell4.stringCellValue.length + 25) * 256)
+
+        if (format == ".xlsx") {
+            // Header Font
+            val headerFont: Font = workbook.createFont()
+            headerFont.color = IndexedColors.WHITE.index
+
+            // Header Style
+            val headerStyle = workbook.createCellStyle()
+            headerStyle.alignment = HorizontalAlignment.CENTER
+            headerStyle.fillForegroundColor = IndexedColors.VIOLET.index
+            headerStyle.fillPattern = FillPatternType.SOLID_FOREGROUND
+            headerStyle.setFont(headerFont)
+
+            // Setting Header Style
+            cell0.cellStyle = headerStyle
+            cell1.cellStyle = headerStyle
+            cell2.cellStyle = headerStyle
+            cell3.cellStyle = headerStyle
+            cell4.cellStyle = headerStyle
+        }
+        // Data
+        // -------------------------------------------------------------------------------------
+        var i = 1
+        for (transaction in transactions) {
+            val row = workSheet.createRow(i)
+            i += 1
+            row.createCell(0).setCellValue(transaction.date)
+            row.createCell(1).setCellValue(transaction.category)
+            row.createCell(2).setCellValue(transaction.amount.toString())
+            row.createCell(3).setCellValue(transaction.title)
+            row.createCell(4).setCellValue(transaction.location)
+        }
+        // -------------------------------------------------------------------------------------
+
+        val out = FileOutputStream(file)
+        workbook.write(out)
+        workbook.close()
+    }
+
+    private fun sendEmail(format: String) {
         val subject = "Riwayat Transaksi"
         val message = "Berikut adalah riwayat transaksi anda"
-        val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
+        val cacheDir = context?.cacheDir
+        val file = File(cacheDir, fileName + format)
         val author = context?.packageName
         val uri = context?.let { FileProvider.getUriForFile(it, "$author.provider", file) }
         email = CredentialManager.getEmail(requireContext()).toString()
@@ -92,11 +160,9 @@ class SendTransactionDialogFragment : DialogFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/" + fileName + format)
 
         if (requestCode == sendVal && resultCode == RESULT_OK) {
             Toast.makeText(requireContext(), "Email sent to $email", Toast.LENGTH_SHORT).show()
-            file.delete()
         }
     }
 }

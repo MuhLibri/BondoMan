@@ -15,13 +15,11 @@ class TransactionReceiver : BroadcastReceiver() {
     }
     override fun onReceive(context: Context, intent: Intent) {
         database = TransactionDatabase.getDatabase(context)
-        println(intent.action.toString())
         val formattedDate = TransactionUtils.getCurrentDate()
         val title = intent.getStringExtra("title")
         val amount = intent.getIntExtra("amount", 0)
         val location = intent.getStringExtra("location")
         val category = intent.getStringExtra("category")
-        println(amount)
 
         val transaction = TransactionUtils.convertToTransaction(title.toString(), amount, formattedDate, location.toString(), category.toString())
         thread {
