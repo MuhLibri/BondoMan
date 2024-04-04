@@ -29,6 +29,14 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 
 ## Screenshot Aplikasi
 
+<table style="padding:10px">
+    <tr>
+        <td><img src="./screenshots/splash-screen.jpg"  alt="1" width = 279px height = 496px ></td>
+        <td><img src="./screenshots/login.jpg" alt="2" width = 279px height = 496px></td>
+        <td><img src="./screenshots/transactions-list.jpg" alt="3" width = 288px height = 512px></td>
+    </tr>
+</table>
+
 ## Pembagian Kerja Kelompok
 
 | Nama                        | NIM      | Pembagian Kerja                                                                   |
