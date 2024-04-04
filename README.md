@@ -31,10 +31,44 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 
 <table style="padding:10px">
     <tr>
-        <td><img src="./screenshots/splash-screen.jpg"  alt="1" ></td>
-        <td><img src="./screenshots/login.jpg" alt="2"></td>
-        <td><img src="./screenshots/transactions-list.jpg" alt="3"></td>
+        <td><img src="./screenshots/splash-screen.jpg"  alt="splash screen" ></td>
+        <td><img src="./screenshots/login.jpg" alt="login"></td>
+        <td><img src="./screenshots/transactions-list.jpg" alt="transactions list"></td>
     </tr>
+    <tr>
+        <td><img src="./screenshots/scan.jpg"  alt="scan" ></td>
+        <td><img src="./screenshots/twibbon.jpg" alt="twibbon"></td>
+        <td><img src="./screenshots/retake-twibbon.jpg" alt="retake twibbon"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/graph.jpg"  alt="graph" ></td>
+        <td><img src="./screenshots/settings.jpg" alt="settings"></td>
+        <td><img src="./screenshots/add-transaction.jpg" alt="add transaction"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/edit-transaction.jpg"  alt="edit transaction" ></td>
+        <td><img src="./screenshots/delete-transaction.jpg" alt="delete transaction"></td>
+        <td><img src="./screenshots/discard-changes.jpg" alt="discard changes"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/scan-photo.jpg"  alt="scan photo" ></td>
+        <td><img src="./screenshots/scanned-transactions-added.jpg" alt="scanned transactions added"></td>
+        <td><img src="./screenshots/save-transaction-dialog.jpg" alt="save transaction dialog"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/save-transaction-succeed.jpg"  alt="save transaction succeed" ></td>
+        <td><img src="./screenshots/send-transaction-dialog.jpg" alt="send transaction dialog"></td>
+        <td><img src="./screenshots/send-transactions-intent.jpg" alt="send transaction intent"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/randomize.jpg"  alt="randomize transaction" ></td>
+        <td><img src="./screenshots/clear-transactions.jpg" alt="clear transactions"></td>
+        <td><img src="./screenshots/internet-loss-midst-app.jpg" alt="internet loss midst app"></td>
+    </tr>
+    <tr>
+        <td><img src="./screenshots/internet-loss-beginning-app.jpg"  alt="internet loss beginning app" ></td>
+    </tr>
+
 </table>
 
 ## Pembagian Kerja Kelompok
