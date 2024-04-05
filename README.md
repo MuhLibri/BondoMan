@@ -76,7 +76,7 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 | Nama                        | NIM      | Pembagian Kerja                                                                   |
 |-----------------------------|----------|-----------------------------------------------------------------------------------|
 | Adam Dharma Sakti           | 10023359 | Header                                                                            |
-| Muhammad Equillibrie Fajria | 13521047 | Graf transaksi, simpan transaksi dalam XLS/XLSX, intent Gmail, broadcast receiver |
+| Muhammad Equilibrie Fajria  | 13521047 | Graf transaksi, simpan transaksi dalam XLS/XLSX, intent Gmail, broadcast receiver |
 | M Farrel Danendra Rachim    | 13521048 | Navbar, CRUD Transaksi, daftar transaksi, scan nota, Twibbon, OWASP               |
 | Addin Munawar Yusuf         | 13521085 | Login, logout, background service, network sensing                                |
 
@@ -85,6 +85,6 @@ Pengguna perlu login ke dalam akun yang telah ditentukan untuk menggunakan aplik
 | Nama                        | NIM      | Jumlah Jam Persiapan/Pengerjaan |
 |-----------------------------|----------|---------------------------------|
 | Adam Dharma Sakti           | 10023359 | 1 jam                           |
-| Muhammad Equillibrie Fajria | 13521047 | 25 jam                          |
+| Muhammad Equilibrie Fajria  | 13521047 | 25 jam                          |
 | M Farrel Danendra Rachim    | 13521048 | 30 jam                          |
 | Addin Munawar Yusuf         | 13521085 | 25 jam                          |
